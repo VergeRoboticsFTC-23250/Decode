@@ -18,15 +18,17 @@ public class Turret extends SubsystemBase {
     public double pos = 0;
     // might have to add isAligning boolean to stop PID
 
-    public static double p = 0.001;
-    public static double d = 0;
+    public static double p = 0.1;
+    public static double d = 0.001;
     public PIDFController controller = new PIDFController(p, 0, d, 0);
     public double tolerance = 1;
     // measurement is in degrees not ticks
 
     public Turret(HardwareMap hMap) {
         turret = new Motor(hMap, "turret", Motor.GoBILDA.BARE);
+        turret.stopAndResetEncoder();
         turret.setZeroPowerBehavior(Motor.ZeroPowerBehavior.FLOAT);
+        turret.setInverted(true);
         controller.setTolerance(tolerance);
         controller.setSetPoint(0);
     }
