@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.utils.subsystems;
 
 import com.bylazar.configurables.annotations.Configurable;
+import com.pedropathing.geometry.Pose;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.seattlesolvers.solverslib.command.SubsystemBase;
 import com.seattlesolvers.solverslib.controller.PIDFController;
@@ -18,7 +19,7 @@ public class Turret extends SubsystemBase {
     public double pos = 0;
     // might have to add isAligning boolean to stop PID
 
-    public static double p = 0.1;
+    public static double p = 0.05;
     public static double d = 0.001;
     public PIDFController controller = new PIDFController(p, 0, d, 0);
     public double tolerance = 1;
@@ -44,10 +45,17 @@ public class Turret extends SubsystemBase {
     public void setTarget(double target) { controller.setSetPoint(target); }
     public double getTarget() { return controller.getSetPoint(); }
 
-    public void setKnownPos(double deg) {
-        turret.stopMotor();
-        turret.stopAndResetEncoder();
-        offset = deg;
-        pos = offset;
+    public void updateFacingPoint(double x, double y, Pose current) {
+        double fieldAngle = Math.toDegrees(Math.atan2(
+                y - current.getY(),
+                x - current.getX()
+        ));
+
+        double robotHeading = Math.toDegrees(current.getHeading());
+
+        double turretTarget = fieldAngle - robotHeading;
+
+        update(turretTarget);
     }
+
 }
