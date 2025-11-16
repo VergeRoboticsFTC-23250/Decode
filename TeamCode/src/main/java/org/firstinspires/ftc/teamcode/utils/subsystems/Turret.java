@@ -35,13 +35,17 @@ public class Turret extends SubsystemBase {
     }
 
     public void update() {
+        if (getTarget() <= -180) setTarget(360 + getTarget());
         pos = turret.getCurrentPosition() * degreesPerTick + offset;
         turret.set(controller.calculate(pos));
     }
-    public void update(double target) { // lowk gotta figure out how to work this with pinpoint
+    public void update(double target) {
+        if (target <= -180) target += 360;
+        controller.setSetPoint(target);
         pos = turret.getCurrentPosition() * degreesPerTick + offset;
         turret.set(controller.calculate(pos, target));
     }
+
     public void setTarget(double target) { controller.setSetPoint(target); }
     public double getTarget() { return controller.getSetPoint(); }
 
@@ -52,10 +56,8 @@ public class Turret extends SubsystemBase {
         ));
 
         double robotHeading = Math.toDegrees(current.getHeading());
-
         double turretTarget = fieldAngle - robotHeading;
 
         update(turretTarget);
     }
-
 }

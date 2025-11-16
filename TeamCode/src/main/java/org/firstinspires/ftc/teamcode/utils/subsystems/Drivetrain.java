@@ -20,6 +20,7 @@ public class Drivetrain extends SubsystemBase {
         follower.setStartingPose(new Pose(0, 0, 0));
         follower.startTeleopDrive(true);
         headingController = new PIDFController(follower.constants.coefficientsHeadingPIDF);
+        follower.update();
     }
 
     public void fieldCentric(Gamepad gamepad1) {
