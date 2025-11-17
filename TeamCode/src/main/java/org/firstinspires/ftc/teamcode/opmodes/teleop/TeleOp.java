@@ -5,6 +5,7 @@ import com.seattlesolvers.solverslib.command.CommandOpMode;
 
 import org.firstinspires.ftc.teamcode.utils.subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.utils.subsystems.Intake;
+import org.firstinspires.ftc.teamcode.utils.subsystems.Shooter;
 import org.firstinspires.ftc.teamcode.utils.subsystems.Turret;
 
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp
@@ -14,6 +15,7 @@ public class TeleOp extends CommandOpMode {
     Turret turret;
     Drivetrain drivetrain;
     Intake intake;
+    Shooter shooter;
 
     // loop timing
     private long lastLoopTimeNs = 0;
@@ -25,16 +27,31 @@ public class TeleOp extends CommandOpMode {
         turret = new Turret(hardwareMap);
         drivetrain = new Drivetrain(hardwareMap);
         intake = new Intake(hardwareMap);
+//        shooter = new Shooter(hardwareMap);
 
         register(turret, drivetrain, intake);
     }
 
     public void run() {
-
         // update subsystems
-        drivetrain.fieldCentric(gamepad1);
-        turret.updateFacingPoint(0.01,0.01, drivetrain.follower.getPose());
+        drivetrain.robotCentric(gamepad1);
+        turret.update(0);
+        if (gamepad1.dpad_up) {
+            turret.update(-drivetrain.getHeading());
+        }
         intake.setPower(gamepad1.right_trigger - gamepad1.left_trigger);
+
+//        if (gamepad1.cross) {
+//            shooter.setHood(Shooter.hoodMax);
+//            shooter.setStopper(Shooter.stopperOpen);
+//            shooter.setTargetVelo(Shooter.maxVelo);
+//        } else if (gamepad1.triangle) {
+//            shooter.setHood(Shooter.hoodMin);
+//            shooter.setStopper(Shooter.stopperClosed);
+//            shooter.setTargetVelo(0);
+//        }
+
+//        shooter.update();
 
         // loop timing
         long now = System.nanoTime();
