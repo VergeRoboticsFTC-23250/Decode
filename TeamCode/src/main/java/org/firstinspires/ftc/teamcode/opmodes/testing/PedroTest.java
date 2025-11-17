@@ -1,35 +1,70 @@
 package org.firstinspires.ftc.teamcode.opmodes.testing;
 
-import com.pedropathing.follower.Follower;
-import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
-import com.pedropathing.paths.Path;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.seattlesolvers.solverslib.command.CommandOpMode;
+import com.seattlesolvers.solverslib.command.SequentialCommandGroup;
+import com.seattlesolvers.solverslib.pedroCommand.FollowPathCommand;
 
-import org.firstinspires.ftc.teamcode.pedro.Constants;
+import org.firstinspires.ftc.teamcode.utils.Paths;
+import org.firstinspires.ftc.teamcode.utils.Snoopy;
+import org.firstinspires.ftc.teamcode.utils.subsystems.Drivetrain;
+import org.firstinspires.ftc.teamcode.utils.subsystems.Intake;
+import org.firstinspires.ftc.teamcode.utils.subsystems.Shooter;
+import org.firstinspires.ftc.teamcode.utils.subsystems.Turret;
 
 @Autonomous
-public class PedroTest extends OpMode {
+public class PedroTest extends CommandOpMode {
 
-    Follower follower;
-    Path path;
+    Snoopy snoopy;
+    Drivetrain drivetrain;
+    Intake intake;
+    Shooter shooter;
+    Turret turret;
+
+    Paths paths;
 
     @Override
-    public void init() {
-        follower = Constants.createFollower(hardwareMap);
-        follower.setStartingPose(new Pose(0,0,0));
-        path = new Path(
-                new BezierLine(
-                        new Pose(0,0,0),
-                        new Pose(20,0,0)
-                )
-        );
-        follower.followPath(path);
+    public void initialize() {
+        snoopy = new Snoopy(hardwareMap, Snoopy.MatchState.AUTO, Snoopy.Alliance.BLUE);
+        drivetrain = new Drivetrain(hardwareMap);
+        intake = new Intake(hardwareMap);
+//        shooter = new Shooter(hardwareMap);
+        turret = new Turret(hardwareMap);
+        paths = new Paths(drivetrain.follower);
+
+        register(drivetrain, intake, shooter, turret);
+
+        drivetrain.follower.setStartingPose(new Pose(24.000, 126.500, Math.toRadians(90)));
+
+//        shooter.setStopper(Shooter.stopperOpen);
+
+//        schedule( new SequentialCommandGroup(
+//                new InstantCommand(() -> turret.useFacingPoint = true),
+//                new FollowPathCommand(drivetrain.follower, paths.startToScore).alongWith(
+//                        new RunToVelocity(shooter, Shooter.maxVelo),
+//                        new InstantCommand(() -> shooter.setHood(Shooter.hoodMax))
+//                )
+//        ));
+
+        schedule(new SequentialCommandGroup(
+                new FollowPathCommand(drivetrain.follower, paths.startToScore),
+                new FollowPathCommand(drivetrain.follower, paths.intakeGPP),
+                new FollowPathCommand(drivetrain.follower, paths.scoreGPP),
+                new FollowPathCommand(drivetrain.follower, paths.intakePGP1),
+                new FollowPathCommand(drivetrain.follower, paths.intakePGP2),
+                new FollowPathCommand(drivetrain.follower, paths.scorePGP),
+                new FollowPathCommand(drivetrain.follower, paths.park)
+        ));
     }
 
     @Override
-    public void loop() {
-        follower.update();
+    public void run() {
+        drivetrain.follower.update();
+//        if (turret.useFacingPoint) {
+//            turret.updateFacingPoint(snoopy.turretTrackX, snoopy.turretTrackY, drivetrain.follower.getPose());
+//        } else {
+//            turret.update(0);
+//        }
     }
 }

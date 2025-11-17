@@ -41,17 +41,16 @@ public class TeleOp extends CommandOpMode {
         }
         intake.setPower(gamepad1.right_trigger - gamepad1.left_trigger);
 
-//        if (gamepad1.cross) {
-//            shooter.setHood(Shooter.hoodMax);
-//            shooter.setStopper(Shooter.stopperOpen);
-//            shooter.setTargetVelo(Shooter.maxVelo);
-//        } else if (gamepad1.triangle) {
-//            shooter.setHood(Shooter.hoodMin);
-//            shooter.setStopper(Shooter.stopperClosed);
-//            shooter.setTargetVelo(0);
-//        }
-
-//        shooter.update();
+        if (gamepad1.cross) {
+            shooter.setHood(Shooter.hoodMax);
+            shooter.setStopper(Shooter.stopperOpen);
+            shooter.setTargetVelo(Shooter.maxVelo);
+        } else if (gamepad1.triangle) {
+            shooter.setHood(Shooter.hoodMin);
+            shooter.setStopper(Shooter.stopperClosed);
+            shooter.setTargetVelo(0);
+        }
+        shooter.update();
 
         // loop timing
         long now = System.nanoTime();
