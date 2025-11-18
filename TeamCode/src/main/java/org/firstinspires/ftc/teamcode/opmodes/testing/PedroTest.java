@@ -41,7 +41,7 @@ public class PedroTest extends CommandOpMode {
 
         drivetrain.follower.setStartingPose(new Pose(24.000, 126.500, Math.toRadians(90)));
         schedule(new SequentialCommandGroup(
-                new RunToVelocity(shooter, 500)
+                new RunToVelocity(shooter, 1600)
         ));
     }
 
@@ -50,6 +50,7 @@ public class PedroTest extends CommandOpMode {
         drivetrain.follower.update();
         telemetry.addData("isBusy", drivetrain.follower.isBusy()? "Busy" : "Not Busy");
         telemetry.update();
+        shooter.update();
         super.run();
     }
 }
