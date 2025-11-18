@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.utils.subsystems;
 
+import com.bylazar.configurables.annotations.Configurable;
 import com.pedropathing.control.PIDFController;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.Pose;
@@ -9,9 +10,11 @@ import com.seattlesolvers.solverslib.command.SubsystemBase;
 
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 
+@Configurable
 public class Drivetrain extends SubsystemBase {
     public Follower follower;
     public double targetHeading;
+    public static double slow = .2;
     public Pose targetPose;
     public PIDFController headingController;
 
@@ -34,10 +37,13 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public void robotCentric(Gamepad gamepad1) {
+
+        double multiplier = gamepad1.left_bumper? slow : 1;
+
         follower.setTeleOpDrive(
-                -gamepad1.left_stick_y,
-                -gamepad1.left_stick_x,
-                -gamepad1.right_stick_x,
+                -gamepad1.right_stick_y * multiplier,
+                -gamepad1.right_stick_x * multiplier,
+                -gamepad1.left_stick_x * .5 * multiplier,
                 true
         );
         follower.update();
