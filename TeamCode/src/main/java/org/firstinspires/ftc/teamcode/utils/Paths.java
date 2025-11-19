@@ -27,7 +27,7 @@ public class Paths {
         intakeGPP = follower
                 .pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(60.000, 83.500), new Pose(12.000, 84.000))
+                        new BezierLine(new Pose(60.000, 83.500), new Pose(24.000, 84.000))
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
                 .build();

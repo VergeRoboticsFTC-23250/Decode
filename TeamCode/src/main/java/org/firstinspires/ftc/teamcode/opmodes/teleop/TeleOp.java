@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmodes.teleop;
 
 import com.bylazar.configurables.annotations.Configurable;
+import com.pedropathing.geometry.Pose;
 import com.seattlesolvers.solverslib.command.CommandOpMode;
 
 import org.firstinspires.ftc.teamcode.utils.subsystems.Drivetrain;
@@ -29,26 +30,37 @@ public class TeleOp extends CommandOpMode {
         intake = new Intake(hardwareMap);
         shooter = new Shooter(hardwareMap);
 
+        drivetrain.follower.setStartingPose(new Pose(24, 126.5, Math.toRadians(90)));
+
         register(turret, drivetrain, intake);
     }
 
     public void run() {
         // update subsystems
         drivetrain.robotCentric(gamepad1);
-        turret.update(0);
         if (gamepad1.dpad_up) {
-            turret.update(-drivetrain.getHeading());
+            turret.useFacingPoint = true;
+        } else if (gamepad1.dpad_down) {
+            turret.useFacingPoint = false;
         }
+
+        if (turret.useFacingPoint) {
+            turret.updateFacingPoint(0, 144, drivetrain.follower.getPose());
+        } else {
+            turret.update(0);
+        }
+
         intake.setPower(gamepad1.right_trigger - gamepad1.left_trigger);
 
         if (gamepad1.circle) {
             shooter.setHood(Shooter.hoodShootNear);
-            shooter.setTargetVelo(Shooter.maxVelo);
+            shooter.setTargetVelo(Shooter.maxVelo * 0.5);
         } else if (gamepad1.triangle) {
             shooter.setHood(Shooter.hoodMin);
             shooter.setStopper(Shooter.stopperClosed);
             shooter.setTargetVelo(0);
         } else if (gamepad1.cross){
+            shooter.setHood(Shooter.hoodMin);
             shooter.setStopper(Shooter.stopperOpen);
         }
         shooter.update();
@@ -72,6 +84,4 @@ public class TeleOp extends CommandOpMode {
         telemetry.addData("loopHz", loopMs > 0.0 ? String.format("%.1f", 1000.0 / loopMs) : "N/A");
         telemetry.update();
     }
-
-
 }

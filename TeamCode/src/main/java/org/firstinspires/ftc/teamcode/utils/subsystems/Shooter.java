@@ -18,7 +18,7 @@ public class Shooter extends SubsystemBase {
     public static double d = 0;
     public static double f = 0.0008;
     public PIDFController controller = new PIDFController(p, 0, d, f);
-    public static double tolerance = 5; // in ticks
+    public static double tolerance = 60; // in ticks
 
     // TODO find these values
     public static double stopperOpen = 0.3;
@@ -55,7 +55,7 @@ public class Shooter extends SubsystemBase {
         controller.setSetPoint(velo);
     }
     public void setHood(double pos) {
-        //hood.set(pos);
+        hood.set(pos);
     }
     public void setStopper(double pos) {
         stopper.set(pos);

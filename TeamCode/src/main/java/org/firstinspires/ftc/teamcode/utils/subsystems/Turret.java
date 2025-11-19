@@ -17,7 +17,7 @@ public class Turret extends SubsystemBase {
     public double maxPos = 360;
     public double offset = 0;
     public double pos = 0;
-    public boolean useFacingPoint = true;
+    public boolean useFacingPoint = false;
 
     public static double p = 0.05;
     public static double d = 0.001;
