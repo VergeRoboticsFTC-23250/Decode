@@ -5,59 +5,62 @@ import com.pedropathing.geometry.Pose;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.seattlesolvers.solverslib.command.SubsystemBase;
 import com.seattlesolvers.solverslib.controller.PIDFController;
+import com.seattlesolvers.solverslib.geometry.Pose2d;
+import com.seattlesolvers.solverslib.geometry.Vector2d;
 import com.seattlesolvers.solverslib.hardware.motors.Motor;
+
+import org.firstinspires.ftc.teamcode.utils.Snoopy;
 
 @Configurable
 public class Turret extends SubsystemBase {
-    public Motor turret;
-
-    public double ticksPerDegree = 3.774814815;
-    public double degreesPerTick = 1 / ticksPerDegree;
-    public double minPos = 0;
-    public double maxPos = 360;
-    public double offset = 0;
-    public double pos = 0;
-    public boolean useFacingPoint = false;
-
-    public static double p = 0.05;
-    public static double d = 0.001;
+    public Motor motor;
+    public double ticksPerRadian = 216.2809573;
+    public static double p = 1;
+    public static double d = 0;
     public PIDFController controller = new PIDFController(p, 0, d, 0);
     public double tolerance = 1;
-    // measurement is in degrees not ticks
 
     public Turret(HardwareMap hMap) {
-        turret = new Motor(hMap, "turret", Motor.GoBILDA.BARE);
-        turret.stopAndResetEncoder();
-        turret.setZeroPowerBehavior(Motor.ZeroPowerBehavior.FLOAT);
-        turret.setInverted(true);
+        motor = new Motor(hMap, "turret", Motor.GoBILDA.BARE);
+        motor.stopAndResetEncoder();
+        motor.setZeroPowerBehavior(Motor.ZeroPowerBehavior.FLOAT);
+        motor.setInverted(true);
         controller.setTolerance(tolerance);
-        controller.setSetPoint(0);
+        setAngle(0);
+    }
+
+    public double getAngle(){
+        return motor.getCurrentPosition() / ticksPerRadian;
+    }
+
+    public void setAngle(double angle){
+        controller.setSetPoint(wrapToPi(angle));
     }
 
     public void update() {
-        if (getTarget() <= -180) setTarget(360 + getTarget());
-        pos = turret.getCurrentPosition() * degreesPerTick + offset;
-        turret.set(controller.calculate(pos));
+
+        Pose pos = Snoopy.drivetrain.follower.getPose();
+
+        double deltaX = Snoopy.goal.getX() - pos.getX();
+        double deltaY = Snoopy.goal.getY() - pos.getY();
+
+        double targetAngle = Math.atan(deltaY/deltaX) + Math.PI;
+
+        double robotAngle = Snoopy.drivetrain.follower.getHeading();
+        setAngle(targetAngle - robotAngle);
+        motor.set(controller.calculate(getAngle()));
     }
-    public void update(double target) {
-        if (target <= -180) target += 360;
-        controller.setSetPoint(target);
-        pos = turret.getCurrentPosition() * degreesPerTick + offset;
-        turret.set(controller.calculate(pos, target));
-    }
 
-    public void setTarget(double target) { controller.setSetPoint(target); }
-    public double getTarget() { return controller.getSetPoint(); }
+    public static double wrapToPi(double radians) {
+        double twoPi = 2 * Math.PI;
+        double result = radians % twoPi;
 
-    public void updateFacingPoint(double x, double y, Pose current) {
-        double fieldAngle = Math.toDegrees(Math.atan2(
-                y - current.getY(),
-                x - current.getX()
-        ));
+        if (result <= -Math.PI) {
+            result += twoPi;
+        } else if (result > Math.PI) {
+            result -= twoPi;
+        }
 
-        double robotHeading = Math.toDegrees(current.getHeading());
-        double turretTarget = fieldAngle - robotHeading;
-
-        update(turretTarget);
+        return result;
     }
 }

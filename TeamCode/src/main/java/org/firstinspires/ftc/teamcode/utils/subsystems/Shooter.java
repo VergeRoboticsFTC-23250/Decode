@@ -43,7 +43,6 @@ public class Shooter extends SubsystemBase {
         controller.setTolerance(tolerance);
         controller.setSetPoint(0);
         stopper.set(stopperClosed);
-        //hood.set(hoodMin);
     }
 
     public void update() {
