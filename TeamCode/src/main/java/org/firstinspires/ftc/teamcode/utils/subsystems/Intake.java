@@ -7,15 +7,25 @@ import com.seattlesolvers.solverslib.hardware.motors.Motor;
 public class Intake extends SubsystemBase {
     public Motor intake;
 
-    public double constantPower = 0.1;
+    public double minPower = 0;
+    private double power = minPower;
 
     public Intake(HardwareMap hMap) {
         intake = new Motor(hMap, "intake");
         intake.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
         intake.setInverted(true);
+        intake.set(minPower);
     }
 
     public void setPower(double power) {
-        intake.set(power);
+        this.power = power;
+    }
+
+    public void setMinPower(double minPower){
+        this.minPower = minPower;
+    }
+
+    public void update(){
+        intake.set(Math.max(power, minPower));
     }
 }

@@ -14,21 +14,21 @@ public class Shooter extends SubsystemBase {
     public ServoEx hood;
     public ServoEx stopper;
 
-    public static double p = 0.001;
-    public static double d = 0;
-    public static double f = 0.0008;
-    public PIDFController controller = new PIDFController(p, 0, d, f);
-    public static double tolerance = 60; // in ticks
+    public static double P = 0.001;
+    public static final double D = 0;
+    public static final double F = 0.0008;
+    public PIDFController controller = new PIDFController(P, 0, D, F);
+    public static final double TOLERANCE = 60;
 
-    // TODO find these values
-    public static double stopperOpen = 0.3;
-    public static double stopperClosed = 0.45;
-    public static double hoodMin = 0.267;
-    public static double hoodMax = 0.16;
+    public static final double STOPPER_OPEN = 0.3;
+    public static final double STOPPER_CLOSED = 0.45;
+    public static final double HOOD_MIN = 0.267;
+    public static final double HOOD_MAX = 0.16;
 
-    public static double hoodShootNear = hoodMax;
+    public static final double HOOD_NEAR = 0.2135;
 
-    public static double maxVelo = 1600;
+    public static final double MAX_VELO = 1600;
+    public static final double VELO_NEAR = MAX_VELO * .65;
 
     public Shooter(HardwareMap hMap) {
         shooter1 = new Motor(hMap, "shooter1", Motor.GoBILDA.BARE);
@@ -40,23 +40,40 @@ public class Shooter extends SubsystemBase {
         stopper = new ServoEx(hMap, "stopper");
 
         shooter1.setInverted(true);
-        controller.setTolerance(tolerance);
+        controller.setTolerance(TOLERANCE);
         controller.setSetPoint(0);
-        stopper.set(stopperClosed);
     }
 
     public void update() {
-        double power = controller.calculate(-shooter1.getCorrectedVelocity());
+        double power = controller.calculate(getVelocity());
+        setPower(power);
+    }
+    public void setVelocity(double velocity) {
+        controller.setSetPoint(velocity);
+    }
+
+    public double getVelocity(){
+        return -shooter1.getCorrectedVelocity();
+    }
+
+    public void setPower(double power){
         shooter1.set(power);
         shooter2.set(power);
     }
-    public void setTargetVelo(double velo) {
-        controller.setSetPoint(velo);
+
+    public void closeStopper(){
+        stopper.set(STOPPER_CLOSED);
     }
-    public void setHood(double pos) {
-        hood.set(pos);
+
+    public void openStopper(){
+        stopper.set(STOPPER_OPEN);
     }
-    public void setStopper(double pos) {
-        stopper.set(pos);
+
+    public void resetHood(){
+        hood.set(HOOD_MIN);
+    }
+
+    public void raiseHood(){
+        hood.set(HOOD_NEAR);
     }
 }

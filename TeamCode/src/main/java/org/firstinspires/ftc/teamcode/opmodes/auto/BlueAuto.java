@@ -1,16 +1,24 @@
-package org.firstinspires.ftc.teamcode.opmodes.teleop;
+package org.firstinspires.ftc.teamcode.opmodes.auto;
 
-import com.pedropathing.geometry.Pose;
 import com.seattlesolvers.solverslib.command.CommandOpMode;
+import com.seattlesolvers.solverslib.command.SequentialCommandGroup;
 
 import org.firstinspires.ftc.teamcode.utils.Snoopy;
-import org.firstinspires.ftc.teamcode.utils.subsystems.Drivetrain;
-import org.firstinspires.ftc.teamcode.utils.subsystems.Turret;
 
 public class BlueAuto extends CommandOpMode {
 
     @Override
     public void initialize() {
         Snoopy.init(hardwareMap, Snoopy.MatchState.AUTO, Snoopy.Alliance.BLUE);
+
+        schedule(new SequentialCommandGroup(
+
+        ));
+    }
+
+    @Override
+    public void run() {
+        super.run();
+        Snoopy.update();
     }
 }

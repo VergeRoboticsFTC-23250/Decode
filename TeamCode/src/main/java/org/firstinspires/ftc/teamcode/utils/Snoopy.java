@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.utils;
 
 import com.pedropathing.geometry.Pose;
-import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.seattlesolvers.solverslib.command.CommandScheduler;
 import com.seattlesolvers.solverslib.geometry.Vector2d;
@@ -48,14 +47,38 @@ public class Snoopy {
         Snoopy.drivetrain.follower.setStartingPose(matchState == MatchState.AUTO ? startPose : Storage.pose);
 
         CommandScheduler.getInstance().registerSubsystem(drivetrain, turret, intake, shooter);
-    }
 
-    public static double getHeading(){
-        return Math.toDegrees(Snoopy.drivetrain.follower.getHeading());
+        reset();
     }
 
     public static void update(){
         drivetrain.update();
         turret.update();
+        intake.update();
+        shooter.update();
+    }
+
+    public static void reset(){
+        turret.enableAim = false;
+        intake.setMinPower(0);
+        shooter.setVelocity(0);
+        shooter.closeStopper();
+        shooter.resetHood();
+    }
+
+    public static void prime(){
+        turret.enableAim = true;
+        intake.setMinPower(0);
+        shooter.setVelocity(Shooter.VELO_NEAR);
+        shooter.closeStopper();
+        shooter.raiseHood();
+    }
+
+    public static void shoot(){
+        turret.enableAim = true;
+        intake.setMinPower(1);
+        shooter.setVelocity(Shooter.VELO_NEAR);
+        shooter.openStopper();
+        shooter.raiseHood();
     }
 }

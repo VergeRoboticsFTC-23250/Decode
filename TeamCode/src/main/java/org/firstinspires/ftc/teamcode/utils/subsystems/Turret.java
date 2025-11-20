@@ -20,7 +20,7 @@ public class Turret extends SubsystemBase {
     public PIDFController controller = new PIDFController(p, 0, d, 0);
     public double tolerance = 1;
 
-    public static boolean enableAim = false;
+    public boolean enableAim = false;
 
     public Turret(HardwareMap hMap) {
         motor = new Motor(hMap, "turret", Motor.GoBILDA.BARE);
