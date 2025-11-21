@@ -62,7 +62,7 @@ public class Snoopy {
 
     public static void reset(){
         turret.enableAim = false;
-        intake.setPower(0);
+        intake.setMinPower(0);
         shooter.setVelocity(0);
         shooter.closeStopper();
         shooter.resetHood();
@@ -71,6 +71,7 @@ public class Snoopy {
     public static void prime(){
         turret.enableAim = true;
         intake.setMinPower(0);
+        intake.setPower(0);
         shooter.setVelocity(Shooter.VELO_NEAR);
         shooter.closeStopper();
         shooter.raiseHood();
