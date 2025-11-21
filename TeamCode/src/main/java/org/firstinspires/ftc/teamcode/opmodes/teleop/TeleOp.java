@@ -1,18 +1,22 @@
 package org.firstinspires.ftc.teamcode.opmodes.teleop;
 
 import com.bylazar.configurables.annotations.Configurable;
+import com.bylazar.telemetry.JoinedTelemetry;
+import com.bylazar.telemetry.PanelsTelemetry;
 import com.seattlesolvers.solverslib.command.CommandOpMode;
 
 import org.firstinspires.ftc.teamcode.utils.Snoopy;
-import org.firstinspires.ftc.teamcode.utils.subsystems.Shooter;
 
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp
 @Configurable
 public class TeleOp extends CommandOpMode {
 
+    JoinedTelemetry tele;
+
     @Override
     public void initialize() {
         Snoopy.init(hardwareMap, Snoopy.MatchState.TELEOP, Snoopy.Alliance.BLUE);
+        tele = new JoinedTelemetry(PanelsTelemetry.INSTANCE.getFtcTelemetry(), telemetry);
     }
 
     public void run() {
@@ -30,8 +34,9 @@ public class TeleOp extends CommandOpMode {
             Snoopy.reset();
         }
 
-        telemetry.addData("shooter speed", Snoopy.shooter.getVelocity());
+        tele.addData("shooter speed", Snoopy.shooter.getVelocity());
+        tele.addData("power", Snoopy.shooter.shooter1.get());
 
-        telemetry.update();
+        tele.update();
     }
 }

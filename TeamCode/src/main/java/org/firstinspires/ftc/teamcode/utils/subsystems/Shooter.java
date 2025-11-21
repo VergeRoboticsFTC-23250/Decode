@@ -14,21 +14,23 @@ public class Shooter extends SubsystemBase {
     public ServoEx hood;
     public ServoEx stopper;
 
-    public static double P = 0.001;
-    public static final double D = 0;
-    public static final double F = 0.0008;
+    public static double P = 0.004;
+    public static double D = 0.0;
+    public static double F = 0.0008;
     public PIDFController controller = new PIDFController(P, 0, D, F);
-    public static final double TOLERANCE = 60;
+    public static double TOLERANCE = 40;
 
-    public static final double STOPPER_OPEN = 0.3;
-    public static final double STOPPER_CLOSED = 0.45;
-    public static final double HOOD_MIN = 0.267;
-    public static final double HOOD_MAX = 0.16;
+    public static double STOPPER_OPEN = 0.35;
+    public static double STOPPER_CLOSED = 0.45;
+    public static double HOOD_MIN = 0.267;
+    public static double HOOD_MAX = 0.16;
 
-    public static final double HOOD_NEAR = 0.2135;
+    public static double HOOD_NEAR = 0.2135;
 
     public static final double MAX_VELO = 1600;
-    public static final double VELO_NEAR = MAX_VELO * .65;
+
+    public static double multiplier = 0.65;
+    public static double VELO_NEAR = MAX_VELO * multiplier;
 
     public Shooter(HardwareMap hMap) {
         shooter1 = new Motor(hMap, "shooter1", Motor.GoBILDA.BARE);
@@ -45,8 +47,9 @@ public class Shooter extends SubsystemBase {
     }
 
     public void update() {
-        double power = controller.calculate(getVelocity());
-        setPower(power);
+        double velocity = getVelocity();
+        double power = controller.calculate(velocity);
+        setPower(Math.signum(power) * Math.sqrt(power));
     }
     public void setVelocity(double velocity) {
         controller.setSetPoint(velocity);
@@ -75,5 +78,9 @@ public class Shooter extends SubsystemBase {
 
     public void raiseHood(){
         hood.set(HOOD_NEAR);
+    }
+
+    public void setHoodPercent(double percent) {
+        hood.set(HOOD_MIN + (HOOD_MAX - HOOD_MIN) * percent);
     }
 }

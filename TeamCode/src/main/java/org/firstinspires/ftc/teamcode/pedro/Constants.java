@@ -25,13 +25,13 @@ public class Constants {
                     0.014
             ))
             .translationalPIDFCoefficients(new PIDFCoefficients(
-                    0.15,
+                    0.12,
                     0,
                     0.01,
                     0.014
             ))
             .drivePIDFCoefficients(new FilteredPIDFCoefficients(
-                    0.027,
+                    0.016,
                     0,
                     0.00025,
                     0.6,

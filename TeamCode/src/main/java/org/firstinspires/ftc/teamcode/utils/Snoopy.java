@@ -56,11 +56,13 @@ public class Snoopy {
         turret.update();
         intake.update();
         shooter.update();
+        shooter.controller.setP(Shooter.P);
+        shooter.controller.setF(Shooter.F);
     }
 
     public static void reset(){
         turret.enableAim = false;
-        intake.setMinPower(0);
+        intake.setPower(0);
         shooter.setVelocity(0);
         shooter.closeStopper();
         shooter.resetHood();

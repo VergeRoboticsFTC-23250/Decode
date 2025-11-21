@@ -27,7 +27,7 @@ public class Paths {
         intakeGPP = follower
                 .pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(60.000, 83.500), new Pose(24.000, 84.000))
+                        new BezierLine(new Pose(60.000, 83.500), new Pose(17.000, 84.000))
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
                 .build();
@@ -35,7 +35,7 @@ public class Paths {
         scoreGPP = follower
                 .pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(12.000, 84.000), new Pose(60.000, 83.500))
+                        new BezierLine(new Pose(17.000, 84.000), new Pose(60.000, 83.500))
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
                 .build();
@@ -43,7 +43,7 @@ public class Paths {
         intakePGP1 = follower
                 .pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(60.000, 83.500), new Pose(40.000, 59.500))
+                        new BezierLine(new Pose(60.000, 83.500), new Pose(40.000, 62.000))
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
                 .build();
@@ -51,7 +51,7 @@ public class Paths {
         intakePGP2 = follower
                 .pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(40.000, 59.500), new Pose(7.000, 59.500))
+                        new BezierLine(new Pose(40.000, 62.000), new Pose(8.500, 62.000))
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
                 .build();
@@ -59,7 +59,7 @@ public class Paths {
         scorePGP = follower
                 .pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(7.000, 59.500), new Pose(60.000, 83.500))
+                        new BezierLine(new Pose(8.500, 62.000), new Pose(60.000, 83.500))
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(180))
                 .build();
@@ -67,9 +67,9 @@ public class Paths {
         park = follower
                 .pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(60.000, 83.500), new Pose(20.000, 72.000))
+                        new BezierLine(new Pose(60.000, 83.500), new Pose(22.000, 72.000))
                 )
-                .setConstantHeadingInterpolation(Math.toRadians(180))
+                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(90))
                 .build();
     }
 }
