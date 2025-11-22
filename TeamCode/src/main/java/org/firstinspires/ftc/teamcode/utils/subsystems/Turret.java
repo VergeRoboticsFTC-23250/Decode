@@ -8,6 +8,7 @@ import com.seattlesolvers.solverslib.controller.PIDFController;
 import com.seattlesolvers.solverslib.hardware.motors.Motor;
 
 import org.firstinspires.ftc.teamcode.utils.Snoopy;
+import org.firstinspires.ftc.teamcode.utils.Storage;
 
 @Configurable
 public class Turret extends SubsystemBase {
@@ -55,7 +56,9 @@ public class Turret extends SubsystemBase {
 
         controller.setP(p);
         controller.setD(d);
-        motor.set(controller.calculate(getAngle()));
+        double angle = getAngle();
+        Storage.turretAngle = angle;
+        motor.set(controller.calculate(angle));
     }
 
     public static double wrapToPi(double radians) {

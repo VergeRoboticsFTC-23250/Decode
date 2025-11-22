@@ -10,7 +10,7 @@ import com.seattlesolvers.solverslib.pedroCommand.FollowPathCommand;
 import org.firstinspires.ftc.teamcode.utils.Paths;
 import org.firstinspires.ftc.teamcode.utils.Snoopy;
 
-@Autonomous
+@Autonomous(preselectTeleOp="TeleOp")
 public class BlueAuto extends CommandOpMode {
 
     Paths paths;
@@ -23,6 +23,10 @@ public class BlueAuto extends CommandOpMode {
 
         schedule(new SequentialCommandGroup(
 
+            new InstantCommand(() -> {
+                Snoopy.intake.setPower(0.5);
+                Snoopy.intake.setMinPower(0.5);
+            }),
             new FollowPathCommand(Snoopy.drivetrain.follower, paths.startToScore),
 
             Snoopy.shootOptimized(),
@@ -33,7 +37,11 @@ public class BlueAuto extends CommandOpMode {
             new FollowPathCommand(Snoopy.drivetrain.follower, paths.intakeGPP2),
             new WaitCommand(500),
 
-            new InstantCommand(() -> Snoopy.drivetrain.follower.setMaxPower(0.6)),
+            new InstantCommand(() -> {
+                Snoopy.drivetrain.follower.setMaxPower(0.6);
+                Snoopy.intake.setPower(0.5);
+                Snoopy.intake.setMinPower(0.5);
+            }),
             new FollowPathCommand(Snoopy.drivetrain.follower, paths.scoreGPP),
 
             Snoopy.shootOptimized(),
@@ -45,7 +53,11 @@ public class BlueAuto extends CommandOpMode {
             new WaitCommand(500),
 
 
-            new InstantCommand(() -> Snoopy.drivetrain.follower.setMaxPower(0.6)),
+            new InstantCommand(() -> {
+                Snoopy.drivetrain.follower.setMaxPower(0.6);
+                Snoopy.intake.setPower(0.5);
+                Snoopy.intake.setMinPower(0.5);
+            }),
             new FollowPathCommand(Snoopy.drivetrain.follower, paths.scorePGP),
 
             Snoopy.shootOptimized(),

@@ -5,10 +5,12 @@ import com.seattlesolvers.solverslib.command.Command;
 import com.seattlesolvers.solverslib.command.CommandOpMode;
 import com.seattlesolvers.solverslib.command.InstantCommand;
 import com.seattlesolvers.solverslib.command.SequentialCommandGroup;
+import com.seattlesolvers.solverslib.command.WaitCommand;
 import com.seattlesolvers.solverslib.gamepad.GamepadEx;
 import com.seattlesolvers.solverslib.gamepad.GamepadKeys;
 
 import org.firstinspires.ftc.teamcode.utils.Snoopy;
+import org.firstinspires.ftc.teamcode.utils.Storage;
 
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp
 @Configurable
@@ -16,14 +18,15 @@ public class TeleOp extends CommandOpMode {
 
     @Override
     public void initialize() {
-        Snoopy.init(hardwareMap, Snoopy.MatchState.TELEOP, Snoopy.Alliance.BLUE);
+        Snoopy.init(hardwareMap, Snoopy.MatchState.TELEOP, Storage.alliance);
 
         Command prime = Snoopy.prime();
         Command shoot = Snoopy.shootOptimized();
 
-        GamepadEx driverOp = new GamepadEx(gamepad1);
+        GamepadEx arvind = new GamepadEx(gamepad1);
+        GamepadEx toolOp = new GamepadEx(gamepad2);
 
-        driverOp.getGamepadButton(GamepadKeys.Button.CIRCLE)
+        arvind.getGamepadButton(GamepadKeys.Button.CIRCLE)
                 .whenPressed(new SequentialCommandGroup(
                         new InstantCommand(() -> {
                             prime.cancel();
@@ -32,12 +35,46 @@ public class TeleOp extends CommandOpMode {
                         Snoopy.reset()
                 ));
 
-        driverOp.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
+        arvind.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
                 .whenPressed(prime);
 
-        driverOp.getGamepadButton(GamepadKeys.Button.CROSS)
+        arvind.getGamepadButton(GamepadKeys.Button.CROSS)
                 .whenPressed(shoot);
 
+
+
+        toolOp.getGamepadButton(GamepadKeys.Button.CIRCLE)
+                .whenPressed(new SequentialCommandGroup(
+                        new InstantCommand(() -> {
+                            prime.cancel();
+                            shoot.cancel();
+                        }),
+                        Snoopy.reset()
+                ));
+
+        toolOp.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
+                .whenPressed(prime);
+
+        toolOp.getGamepadButton(GamepadKeys.Button.CROSS)
+                .whenPressed(shoot);
+
+        toolOp.getGamepadButton(GamepadKeys.Button.SQUARE)
+                .whenPressed(new SequentialCommandGroup(
+                        new InstantCommand(() -> {
+                            Snoopy.intake.setMinPower(-1);
+                            Snoopy.intake.setPower(-1);
+                        }),
+                        new WaitCommand(150),
+                        new InstantCommand(() -> {
+                            Snoopy.intake.setPower(1);
+                            Snoopy.intake.setMinPower(1);
+                        }),
+                        new WaitCommand(150),
+                        new InstantCommand(() -> {
+                            Snoopy.intake.setPower(0);
+                            Snoopy.intake.setMinPower(0);
+                        })
+                ));
     }
 
     public void run() {
