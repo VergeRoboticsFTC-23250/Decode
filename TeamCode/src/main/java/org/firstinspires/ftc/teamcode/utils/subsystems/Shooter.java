@@ -25,7 +25,7 @@ public class Shooter extends SubsystemBase {
     public static double HOOD_MIN = 0.267;
     public static double HOOD_MAX = 0.16;
 
-    public static double HOOD_NEAR = .4;
+    public static double HOOD_NEAR = 0.425;
 
     public static final double MAX_VELO = 1600;
 

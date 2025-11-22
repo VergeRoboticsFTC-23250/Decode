@@ -111,12 +111,12 @@ public class Snoopy {
                                     intake.setMinPower(-1);
                                     intake.setPower(-1);
                                 }),
-                                new WaitCommand(150),
+                                new WaitCommand(250),
                                 new InstantCommand(() -> {
                                     intake.setPower(1);
                                     intake.setMinPower(1);
                                 }),
-                                new WaitCommand(150)
+                                new WaitCommand(750)
                         ),
                         new InstantCommand(),
                     usedTimeout::get
