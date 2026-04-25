@@ -15,6 +15,11 @@ public class MotorTest extends OpMode {
      * This method will be called once, when the INIT button is pressed.
      */
 
+    // ehm0 shooter1, reversed
+    // ehm1 shooter2, no reverse
+    // ehm2 transfer, no reverse
+    // ehm3 intake, no reverse
+
     public MotorEx motor1, motor2;
     public static boolean motor2Enabled = true, reverseMotor1, reverseMotor2;
     public static String name1 = "ehm2", name2 = "ehm3";

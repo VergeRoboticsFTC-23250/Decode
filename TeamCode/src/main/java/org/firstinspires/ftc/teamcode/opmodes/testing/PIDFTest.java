@@ -28,9 +28,10 @@ public class PIDFTest extends OpMode {
 
     @Override
     public void init() {
-        shooter1 = new MotorEx(hardwareMap, "chm0");
-        shooter2 = new MotorEx(hardwareMap, "chm1");
-        hood = new ServoEx(hardwareMap, "chs0");
+        shooter1 = new MotorEx(hardwareMap, "ehm0");
+        shooter1.setInverted(true);
+        shooter2 = new MotorEx(hardwareMap, "ehm1");
+        hood = new ServoEx(hardwareMap, "sh4");
         hood.setInverted(true);
 
         mapper = new LinearMapper(0, 1, hoodMin, hoodMax);
@@ -54,7 +55,7 @@ public class PIDFTest extends OpMode {
 
         controller.setSetPoint(setpoint);
 
-        double velo = -shooter2.encoder.getCorrectedVelocity() / 28.0 * 60 * 0.75;
+        double velo = -shooter1.encoder.getCorrectedVelocity() / 28.0 * 60 * 0.75;
         double power = controller.calculate(velo);
 
         if (gamepad1.right_trigger == 0 && gamepad1.left_trigger == 0) {
