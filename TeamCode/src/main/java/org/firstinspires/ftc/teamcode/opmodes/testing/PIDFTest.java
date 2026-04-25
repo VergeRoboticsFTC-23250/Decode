@@ -7,6 +7,9 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.seattlesolvers.solverslib.controller.PIDFController;
 import com.seattlesolvers.solverslib.hardware.motors.MotorEx;
+import com.seattlesolvers.solverslib.hardware.servos.ServoEx;
+
+import org.firstinspires.ftc.teamcode.lib.util.LinearMapper;
 
 @Config
 @TeleOp
@@ -15,15 +18,22 @@ public class PIDFTest extends OpMode {
     PIDFController controller;
     MotorEx shooter1;
     MotorEx shooter2;
-    public static double p = 0.0000, d = 0, f = 0.00036;
-    public static double setpoint;
+    ServoEx hood;
+    LinearMapper mapper;
+    public static double p = 0.0036, d = 0, f = 0.00029;
+    public static double hoodMin = 0.395, hoodMax = 0.87;
+    public static double hoodPos = 0;
+    public static double setpoint = 1000;
     MultipleTelemetry tele;
 
     @Override
     public void init() {
         shooter1 = new MotorEx(hardwareMap, "chm0");
         shooter2 = new MotorEx(hardwareMap, "chm1");
+        hood = new ServoEx(hardwareMap, "chs0");
+        hood.setInverted(true);
 
+        mapper = new LinearMapper(0, 1, hoodMin, hoodMax);
         controller = new PIDFController(p,d,0,f);
         tele = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
@@ -40,6 +50,7 @@ public class PIDFTest extends OpMode {
         controller.setP(p);
         controller.setD(d);
         controller.setF(f);
+        hood.set(mapper.map(hoodPos));
 
         controller.setSetPoint(setpoint);
 

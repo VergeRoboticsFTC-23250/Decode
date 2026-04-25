@@ -7,20 +7,20 @@ import org.firstinspires.ftc.teamcode.lib.util.Context;
 
 public class Turret extends SubsystemBase {
 
-    public ServoEx servo0;
-    public ServoEx servo2;
-    public ServoEx servo3;
+    public ServoEx turret1;
+    public ServoEx turret2;
+    public ServoEx turret3;
     public static final double servoRange = 383.5184;
 
     public Turret(Context c) {
-        servo0 = new ServoEx(c.hMap, "chs0", servoRange);
-        servo2 = new ServoEx(c.hMap, "chs2", servoRange);
-        servo3 = new ServoEx(c.hMap, "chs3", servoRange);
+        turret1 = new ServoEx(c.hMap, "sh0", servoRange);
+        turret2 = new ServoEx(c.hMap, "sh1", servoRange);
+        turret3 = new ServoEx(c.hMap, "sh2", servoRange);
     }
 
     public void setAngle(double angle) {
-        servo0.set(angle);
-        servo2.set(angle);
-        servo3.set(angle);
+        turret1.set(angle);
+        turret2.set(angle);
+        turret3.set(angle);
     }
 }

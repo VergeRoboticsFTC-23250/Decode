@@ -3,32 +3,32 @@ package org.firstinspires.ftc.teamcode.opmodes.testing;
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.seattlesolvers.solverslib.hardware.servos.ServoEx;
+import com.seattlesolvers.solverslib.hardware.motors.MotorEx;
 
-@Config
 @TeleOp
-public class ServoTest extends OpMode {
+@Config
+public class MotorTest extends OpMode {
+
     /**
      * User-defined init method
      * <p>
      * This method will be called once, when the INIT button is pressed.
      */
 
-    //intake : .92 up, .795 down port sh3
-    //hood port sh4
-    //pto : .51 disengaged, .3 engaged port sh5
-    //stopper : open .535, closed .38 port ehs0
-
-
-    public ServoEx servo;
-    public static String name = "sh3";
-    public static double pos;
-    public static boolean reversed = false;
+    public MotorEx motor1, motor2;
+    public static boolean motor2Enabled = true, reverseMotor1, reverseMotor2;
+    public static String name1 = "ehm2", name2 = "ehm3";
+    public static double power;
 
     @Override
     public void init() {
-        servo = new ServoEx(hardwareMap, name);
-        servo.setInverted(reversed);
+        motor1 = new MotorEx(hardwareMap, name1);
+        motor1.setInverted(reverseMotor1);
+        if (motor2Enabled) {
+            motor2 = new MotorEx(hardwareMap, name2);
+            motor2.setInverted(reverseMotor2);
+        }
+
     }
 
     /**
@@ -39,6 +39,7 @@ public class ServoTest extends OpMode {
      */
     @Override
     public void loop() {
-        servo.set(pos);
+        motor1.set(power);
+        if (motor2Enabled) motor2.set(power);
     }
 }
