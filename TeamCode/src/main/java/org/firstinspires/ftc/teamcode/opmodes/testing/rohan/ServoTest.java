@@ -1,12 +1,12 @@
-package org.firstinspires.ftc.teamcode.opmodes.testing;
+package org.firstinspires.ftc.teamcode.opmodes.testing.rohan;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.seattlesolvers.solverslib.hardware.servos.ServoEx;
 
-@Config
-@TeleOp
+//@Config
+//@TeleOp
 public class ServoTest extends OpMode {
     /**
      * User-defined init method

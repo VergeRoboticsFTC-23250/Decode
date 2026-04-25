@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opmodes.testing;
+package org.firstinspires.ftc.teamcode.opmodes.testing.rohan;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.bylazar.configurables.annotations.Configurable;
@@ -8,9 +8,9 @@ import com.seattlesolvers.solverslib.command.CommandOpMode;
 import org.firstinspires.ftc.teamcode.lib.subsystems.Turret;
 import org.firstinspires.ftc.teamcode.lib.util.Globals;
 
-@TeleOp
-@Configurable
-@Config
+//@TeleOp
+//@Configurable
+//@Config
 public class TurretTest extends CommandOpMode {
 
     public static double angle = 0.0;

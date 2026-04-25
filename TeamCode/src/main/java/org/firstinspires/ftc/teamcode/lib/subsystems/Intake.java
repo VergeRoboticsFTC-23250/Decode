@@ -19,6 +19,8 @@ public class Intake extends SubsystemBase {
         intake = new MotorEx(g.hMap, "ehm3");
         transfer = new MotorEx(g.hMap, "ehm2");
         pivot = new ServoEx(g.hMap, "sh3");
+
+        run(0);
     }
     public void run(double pow) {
         pivot.set(pow > 0? lower : raise);
