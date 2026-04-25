@@ -1,40 +1,37 @@
 package org.firstinspires.ftc.teamcode.lib.subsystems;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.seattlesolvers.solverslib.command.SubsystemBase;
 import com.seattlesolvers.solverslib.hardware.motors.MotorEx;
 import com.seattlesolvers.solverslib.hardware.servos.ServoEx;
 
-import org.firstinspires.ftc.teamcode.lib.util.Context;
+import org.firstinspires.ftc.teamcode.lib.util.Globals;
 
+@Config
 public class Intake extends SubsystemBase {
-    public MotorEx intake, transfer;
-    public ServoEx intakeArm;
+    public static double raise = 0.92, lower = 0.795;
+    private boolean enableTransfer = false;
 
-    public static double armUp = 0.92, armDown = 0.795, armJiggle = 0.815;
+    private final MotorEx intake, transfer;
+    private final ServoEx pivot;
 
-    public Intake(Context c) {
-        intake = new MotorEx(c.hMap, "ehm3");
-        transfer = new MotorEx(c.hMap, "ehm2");
-        intakeArm = new ServoEx(c.hMap, "sh3");
+    public Intake(Globals g) {
+        intake = new MotorEx(g.hMap, "ehm3");
+        transfer = new MotorEx(g.hMap, "ehm2");
+        pivot = new ServoEx(g.hMap, "sh3");
     }
-
-    public void armDown() {
-        intakeArm.set(armDown);
-    }
-    public void armJiggle() {
-        intakeArm.set(armJiggle);
-    }
-    public void armUp() {
-        intakeArm.set(armUp);
-    }
-    public void set(double pow) {
+    public void run(double pow) {
+        pivot.set(pow > 0? lower : raise);
         intake.set(pow);
-        transfer.set(pow);
+        transfer.set(enableTransfer? pow : 0);
     }
-    public void setIntake(double pow) {
-        intake.set(pow);
+    public void enableTransfer() {
+        enableTransfer = true;
+        transfer.set(intake.get());
     }
-    public void setTransfer(double pow) {
-        transfer.set(pow);
+
+    public void disableTransfer() {
+        enableTransfer = false;
+        transfer.set(0);
     }
 }

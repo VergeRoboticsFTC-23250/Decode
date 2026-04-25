@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.seattlesolvers.solverslib.command.CommandOpMode;
 
 import org.firstinspires.ftc.teamcode.lib.subsystems.Turret;
-import org.firstinspires.ftc.teamcode.lib.util.Context;
+import org.firstinspires.ftc.teamcode.lib.util.Globals;
 
 @TeleOp
 @Configurable
@@ -16,14 +16,14 @@ public class TurretTest extends CommandOpMode {
     public static double angle = 0.0;
     public static boolean wrapped = false;
 
-    private Context c;
+    private Globals g;
     private Turret turret;
 //    private GoBildaPinpointDriver pinpoint;
 
     @Override
     public void initialize() {
-        c = new Context(hardwareMap);
-        turret = new Turret(c);
+        g = new Globals(hardwareMap);
+        turret = new Turret(g);
 
 //        pinpoint = hardwareMap.get(GoBildaPinpointDriver.class, "pinpoint");
 //        pinpoint.resetPosAndIMU();
