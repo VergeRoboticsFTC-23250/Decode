@@ -1,8 +1,6 @@
-package org.firstinspires.ftc.teamcode.opmodes.testing.rohan;
+package org.firstinspires.ftc.teamcode.opmodes.testing;
 
-import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.seattlesolvers.solverslib.hardware.motors.MotorEx;
 import com.seattlesolvers.solverslib.hardware.servos.ServoEx;
 
