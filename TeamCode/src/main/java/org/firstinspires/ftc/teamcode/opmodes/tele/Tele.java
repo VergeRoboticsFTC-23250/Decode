@@ -1,7 +1,13 @@
 package org.firstinspires.ftc.teamcode.opmodes.tele;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.Gamepad;
+import com.seattlesolvers.solverslib.command.Command;
 import com.seattlesolvers.solverslib.command.CommandOpMode;
+import com.seattlesolvers.solverslib.command.InstantCommand;
+import com.seattlesolvers.solverslib.command.RunCommand;
+import com.seattlesolvers.solverslib.gamepad.GamepadEx;
+import com.seattlesolvers.solverslib.gamepad.GamepadKeys;
 
 import org.firstinspires.ftc.teamcode.lib.Snoopy;
 import org.firstinspires.ftc.teamcode.lib.util.Globals;
@@ -10,21 +16,27 @@ import org.firstinspires.ftc.teamcode.lib.util.Globals;
 public class Tele extends CommandOpMode {
     Globals g;
     Snoopy snoopy;
+    GamepadEx arv;
     @Override
     public void initialize() {
         g = new Globals(this);
         snoopy = new Snoopy(this);
+
+        arv = new GamepadEx(gamepad1);
+
+        Command shoot = new RunCommand(() -> {
+            snoopy.intake.run(1, true);
+            snoopy.shooter.stopper.open();
+        }, snoopy.intake, snoopy.shooter.stopper);
+
+        arv.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whenPressed(shoot).whenReleased(new InstantCommand(shoot::cancel));
     }
 
     @Override
     public void run() {
         super.run();
         snoopy.run();
-        snoopy.intake.run(gamepad1.right_trigger - gamepad1.left_trigger);
-
-        if (gamepad1.crossWasPressed()) {
-            snoopy.shooter.stopper.toggle();
-        }
+        snoopy.intake.setDefaultCommand(new InstantCommand(() -> snoopy.intake.run(gamepad1.right_trigger - gamepad1.left_trigger)));
 
         snoopy.drivetrain.drive(gamepad1);
     }

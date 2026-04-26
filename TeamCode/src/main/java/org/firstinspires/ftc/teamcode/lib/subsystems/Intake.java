@@ -16,6 +16,7 @@ public class Intake extends SubsystemBase {
     public static double raise = 0.92, lower = 0.795;
     public static double red = .28, orange = 0.33, yellow = 0.388, green = 0.5;
     private double pow;
+    private boolean force;
 
     public Intake(Globals g) {
         intake = new MotorEx(g.hMap, "ehm3");
@@ -28,7 +29,14 @@ public class Intake extends SubsystemBase {
         back = new Brushland(g.hMap, "dpin0", "dpin1");
     }
 
-    public void run(double pow) {this.pow = pow;}
+    public void run(double pow){
+        run(pow, false);
+    }
+
+    public void run(double pow, boolean force) {
+        this.pow = pow;
+        this.force = force;
+    }
 
     @Override
     public void periodic() {
@@ -36,7 +44,10 @@ public class Intake extends SubsystemBase {
 
         pivot.set(pow > 0? lower : raise);
 
-        if(pow > 0){
+        if(pow <= 0 || force){
+            transfer.set(pow);
+            intake.set(pow);
+        }else{
             if(back.isBlocked() || (middle.isBlocked() & front.isBlocked())){
                 transfer.set(0);
             }else{
@@ -48,9 +59,6 @@ public class Intake extends SubsystemBase {
             }else{
                 intake.set(pow);
             }
-        }else{
-            transfer.set(pow);
-            intake.set(pow);
         }
 
         if(front.isBlocked() && middle.isBlocked() && front.isBlocked()) rgb.set(green);
