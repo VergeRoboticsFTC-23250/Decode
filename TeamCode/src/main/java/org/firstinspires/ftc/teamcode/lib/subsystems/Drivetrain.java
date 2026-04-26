@@ -7,6 +7,7 @@ import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.BezierCurve;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
+import com.pedropathing.math.Vector;
 import com.pedropathing.paths.PathChain;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.seattlesolvers.solverslib.command.SubsystemBase;
@@ -23,8 +24,10 @@ public class Drivetrain extends SubsystemBase {
     public static boolean reverse = true;
 
     public PathChain preload, intakeFirst, shootFirst, intakeSecond, shootSecond;
+    Globals g;
 
     public Drivetrain(Globals g){
+        this.g = g;
         pto = new ServoEx(g.hMap, "sh5");
         follower = Constants.createFollower(g.hMap);
         follower.setStartingPose(g.startPose);
@@ -49,6 +52,10 @@ public class Drivetrain extends SubsystemBase {
     public void periodic() {
         super.periodic();
         follower.update();
+    }
+
+    public Vector getDistanceFromGoal(){
+        return new Vector(g.goalPose.minus(follower.getPose()));
     }
 
     public void buildPaths() {

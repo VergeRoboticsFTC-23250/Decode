@@ -3,33 +3,40 @@ package org.firstinspires.ftc.teamcode.lib.util;
 import android.graphics.Point;
 
 import com.pedropathing.geometry.Pose;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.seattlesolvers.solverslib.command.CommandOpMode;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class Globals {
     private static Globals instance;
-    private static final Point GOAL_POINT_RED = new Point(144,144);
-    private static final Point GOAL_POINT_BLUE = new Point(0,144);
+    private static final Pose GOAL_POSE_RED = new Pose(144,144);
+    private static final Pose GOAL_POSE_BLUE = new Pose(0,144);
     private static final Pose START_POSE_RED = new Pose(117,127,0);
     private static final Pose START_POSE_BLUE = START_POSE_RED.mirror();
     public enum Alliance{ RED, BLUE }
     public enum MatchState{ AUTO, TELE }
     public final HardwareMap hMap;
+    public final Telemetry telemetry;
     public final MatchState matchState;
     public final Alliance alliance;
-    public final Point goalPoint;
+    public final Pose goalPose;
     public final Pose startPose;
-    public Globals (HardwareMap hMap, MatchState matchState, Alliance alliance) {
-        this.hMap = hMap;
-        this.matchState = matchState;
+    public Globals (CommandOpMode opMode, Alliance alliance) {
+        this.hMap = opMode.hardwareMap;
+        this.telemetry = opMode.telemetry;
+        this.matchState = opMode.getClass().isAnnotationPresent(Autonomous.class)? MatchState.AUTO : MatchState.TELE;
         this.alliance = alliance;
 
-        this.goalPoint = alliance == Alliance.RED? GOAL_POINT_RED : GOAL_POINT_BLUE;
+        this.goalPose = alliance == Alliance.RED? GOAL_POSE_RED : GOAL_POSE_BLUE;
         this.startPose = alliance == Alliance.RED? START_POSE_RED : START_POSE_BLUE;
 
         Globals.instance = this;
     }
-    public Globals(HardwareMap hMap){
-        this(hMap, MatchState.TELE, Alliance.RED);
+    public Globals(CommandOpMode opMode){
+        this(opMode, Alliance.RED);
     }
 
     public static Globals getInstance() {

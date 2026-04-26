@@ -19,7 +19,7 @@ public class TurretTest extends CommandOpMode {
 
     @Override
     public void initialize() {
-        g = new Globals(hardwareMap);
+        g = new Globals(this);
         turret = new Turret(g);
 
 //        pinpoint = hardwareMap.get(GoBildaPinpointDriver.class, "pinpoint");

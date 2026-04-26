@@ -23,7 +23,7 @@ public class RedAuto extends CommandOpMode {
 
     @Override
     public void initialize() {
-        globals = new Globals(hardwareMap, Globals.MatchState.AUTO, Globals.Alliance.RED);
+        globals = new Globals(this, Globals.Alliance.RED);
         drivetrain = new Drivetrain(globals);
         drivetrain.buildPaths();
         schedule(
