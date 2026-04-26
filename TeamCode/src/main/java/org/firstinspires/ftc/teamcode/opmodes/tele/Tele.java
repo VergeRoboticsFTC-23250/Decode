@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.opmodes.tele;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.Gamepad;
 import com.seattlesolvers.solverslib.command.Command;
 import com.seattlesolvers.solverslib.command.CommandOpMode;
 import com.seattlesolvers.solverslib.command.InstantCommand;
@@ -24,10 +23,7 @@ public class Tele extends CommandOpMode {
 
         arv = new GamepadEx(gamepad1);
 
-        Command shoot = new RunCommand(() -> {
-            snoopy.intake.run(1, true);
-            snoopy.shooter.stopper.open();
-        }, snoopy.intake, snoopy.shooter.stopper);
+        Command shoot = snoopy.shoot();
 
         arv.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whenPressed(shoot).whenReleased(new InstantCommand(shoot::cancel));
     }

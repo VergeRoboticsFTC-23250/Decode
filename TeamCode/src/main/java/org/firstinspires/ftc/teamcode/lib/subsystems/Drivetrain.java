@@ -19,11 +19,11 @@ import org.firstinspires.ftc.teamcode.lib.util.Globals;
 @Config
 public class Drivetrain extends SubsystemBase {
     private ServoEx pto;
-    public static double engage = 0.3, disengage = 0.51;
+    public static double engage = 0.2, disengage = 0.375;
     public Follower follower;
     public static boolean reverse = true;
 
-    public PathChain preload, intakeFirst, shootFirst, intakeSecond, shootSecond;
+    public PathChain preload, intakeFirst, shootFirst, intakeSecond1, intakeSecond2, intakeSecond3, shootSecond;
     Globals g;
 
     public Drivetrain(Globals g){
@@ -58,12 +58,12 @@ public class Drivetrain extends SubsystemBase {
         return new Vector(g.goalPose.minus(follower.getPose()));
     }
 
-    public void buildPaths() {
+    public void buildPathsCloseRed() {
         preload = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
                                 new Pose(117.000, 127.000),
-                                new Pose(96.000, 96.000)
+                                new Pose(90.000, 96.000)
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(315))
@@ -72,8 +72,8 @@ public class Drivetrain extends SubsystemBase {
         intakeFirst = follower.pathBuilder()
                 .addPath(
                         new BezierCurve(
-                                new Pose(96.000, 96.000),
-                                new Pose(102.727, 81.375),
+                                new Pose(90.000, 96.000),
+                                new Pose(95.727, 81.375),
                                 new Pose(128.000, 84.000)
                         )
                 )
@@ -84,18 +84,18 @@ public class Drivetrain extends SubsystemBase {
                 .addPath(
                         new BezierLine(
                                 new Pose(128.000, 84.000),
-                                new Pose(86.000, 86.000)
+                                new Pose(83.000, 86.000)
                         )
                 )
                 .setTangentHeadingInterpolation()
                 .setReversed()
                 .build();
 
-        intakeSecond = follower.pathBuilder()
+        intakeSecond1 = follower.pathBuilder()
                 .addPath(
                         new BezierCurve(
-                                new Pose(86.000, 86.000),
-                                new Pose(88.571, 56.845),
+                                new Pose(83.000, 86.000),
+                                new Pose(82.571, 56.845),
                                 new Pose(136.000, 60.000)
                         )
                 )
@@ -113,4 +113,73 @@ public class Drivetrain extends SubsystemBase {
                 .setReversed()
                 .build();
     }
+
+    public void buildPathsFarRed() {
+        intakeFirst = follower.pathBuilder()
+                .addPath(
+                        new BezierCurve(
+                                new Pose(89.000, 7.000),
+                                new Pose(84.900, 39.416),
+                                new Pose(134.000, 35.000)
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(0))
+                .build();
+
+        shootFirst = follower.pathBuilder()
+                .addPath(
+                        new BezierLine(
+                                new Pose(134.000, 35.000),
+                                new Pose(93.000, 9.000)
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(0))
+                .build();
+
+        intakeSecond1 = follower.pathBuilder()
+                .addPath(
+                        new BezierLine(
+                                new Pose(93.000, 9.000),
+                                new Pose(135.000, 15.000)
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(0))
+                .build();
+
+        intakeSecond2 = follower.pathBuilder()
+                .addPath(
+                        new BezierLine(
+                                new Pose(135.000, 15.000),
+                                new Pose(128.000, 7.000)
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(0))
+                .build();
+
+        intakeSecond3 = follower.pathBuilder()
+                .addPath(
+                        new BezierLine(
+                                new Pose(128.000, 7.000),
+                                new Pose(135.000, 7.000)
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(0))
+                .build();
+
+        shootSecond = follower.pathBuilder()
+                .addPath(
+                        new BezierLine(
+                                new Pose(135.000, 7.000),
+                                new Pose(98.000, 7.000)
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(0))
+                .build();
+    }
+
+//    public void buildPathsCloseBlue() {
+//        buildPathsCloseRed();
+//
+//         mirror all of them
+//    }
 }

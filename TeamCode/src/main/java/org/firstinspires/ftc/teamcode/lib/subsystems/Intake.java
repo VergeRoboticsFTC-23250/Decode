@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.lib.subsystems;
 
 import com.acmerobotics.dashboard.config.Config;
+import com.seattlesolvers.solverslib.command.RunCommand;
 import com.seattlesolvers.solverslib.command.SubsystemBase;
 import com.seattlesolvers.solverslib.hardware.motors.MotorEx;
 import com.seattlesolvers.solverslib.hardware.servos.ServoEx;
@@ -27,6 +28,8 @@ public class Intake extends SubsystemBase {
         front = new Brushland(g.hMap, "dpin4", "dpin5");
         middle = new Brushland(g.hMap, "dpin2", "dpin3");
         back = new Brushland(g.hMap, "dpin0", "dpin1");
+
+        setDefaultCommand(new RunCommand(() -> run(0), this));
     }
 
     public void run(double pow){

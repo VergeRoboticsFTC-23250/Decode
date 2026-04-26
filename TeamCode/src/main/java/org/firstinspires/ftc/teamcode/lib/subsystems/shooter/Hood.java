@@ -14,7 +14,7 @@ public class Hood extends SubsystemBase {
     LinearMapper mapper;
 
     public Hood(Globals g){
-        hood = new ServoEx(g.hMap, "sh4");
+        hood = new ServoEx(g.hMap, "ehs0");
         hood.setInverted(true);
         mapper = new LinearMapper(0, 1, min, max);
     }

@@ -9,13 +9,15 @@ import org.firstinspires.ftc.teamcode.lib.util.Helpers;
 
 @Config
 public class Turret extends SubsystemBase {
+    private Globals g;
     public ServoEx turret1;
     public ServoEx turret2;
     public ServoEx turret3;
     public static final double servoRange = 383.5184;
-    public static double offset = 0.0;
+    public static double offset = -6;
 
     public Turret(Globals g) {
+        this.g = g;
         turret1 = new ServoEx(g.hMap, "sh0", servoRange);
         turret2 = new ServoEx(g.hMap, "sh1", servoRange);
         turret3 = new ServoEx(g.hMap, "sh2", servoRange);
