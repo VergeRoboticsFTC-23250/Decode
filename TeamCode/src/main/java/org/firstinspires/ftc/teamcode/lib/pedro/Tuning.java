@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.lib.pedro;
 
+import static com.pedropathing.math.MathFunctions.quadraticFit;
 import static org.firstinspires.ftc.teamcode.lib.pedro.Tuning.changes;
 import static org.firstinspires.ftc.teamcode.lib.pedro.Tuning.drawCurrent;
 import static org.firstinspires.ftc.teamcode.lib.pedro.Tuning.drawCurrentAndHistory;
@@ -7,6 +8,9 @@ import static org.firstinspires.ftc.teamcode.lib.pedro.Tuning.follower;
 import static org.firstinspires.ftc.teamcode.lib.pedro.Tuning.stopRobot;
 import static org.firstinspires.ftc.teamcode.lib.pedro.Tuning.telemetryM;
 
+import android.annotation.SuppressLint;
+
+import com.acmerobotics.dashboard.config.Config;
 import com.bylazar.configurables.PanelsConfigurables;
 import com.bylazar.configurables.annotations.Configurable;
 import com.bylazar.configurables.annotations.IgnoreConfigurable;
@@ -16,15 +20,15 @@ import com.bylazar.field.Style;
 import com.bylazar.telemetry.PanelsTelemetry;
 import com.bylazar.telemetry.TelemetryManager;
 import com.pedropathing.follower.Follower;
-import com.pedropathing.geometry.*;
-import com.pedropathing.math.*;
-import com.pedropathing.paths.*;
+import com.pedropathing.geometry.BezierCurve;
+import com.pedropathing.geometry.BezierLine;
+import com.pedropathing.geometry.Pose;
+import com.pedropathing.math.Vector;
+import com.pedropathing.paths.HeadingInterpolator;
+import com.pedropathing.paths.Path;
+import com.pedropathing.paths.PathChain;
 import com.pedropathing.telemetry.SelectableOpMode;
-import com.pedropathing.util.*;
-import static com.pedropathing.math.MathFunctions.quadraticFit;
-
-import android.annotation.SuppressLint;
-
+import com.pedropathing.util.PoseHistory;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -41,6 +45,7 @@ import java.util.List;
  * @version 1.0, 6/26/2025
  */
 @Configurable
+@Config
 @TeleOp(name = "Tuning", group = "Pedro Pathing")
 public class Tuning extends SelectableOpMode {
     public static Follower follower;
@@ -359,7 +364,7 @@ class TurnTuner extends OpMode {
  */
 class ForwardVelocityTuner extends OpMode {
     private final ArrayList<Double> velocities = new ArrayList<>();
-    public static double DISTANCE = 48;
+    public static double DISTANCE = 72;
     public static double RECORD_NUMBER = 10;
 
     private boolean end;
@@ -467,7 +472,7 @@ class ForwardVelocityTuner extends OpMode {
 class LateralVelocityTuner extends OpMode {
     private final ArrayList<Double> velocities = new ArrayList<>();
 
-    public static double DISTANCE = 48;
+    public static double DISTANCE = 84;
     public static double RECORD_NUMBER = 10;
 
     private boolean end;
