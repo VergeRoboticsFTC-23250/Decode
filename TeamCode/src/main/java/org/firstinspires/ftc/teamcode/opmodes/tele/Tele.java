@@ -1,9 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmodes.tele;
 
-import com.pedropathing.math.Vector;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.seattlesolvers.solverslib.command.CommandOpMode;
-import com.seattlesolvers.solverslib.hardware.servos.ServoEx;
 
 import org.firstinspires.ftc.teamcode.lib.Snoopy;
 import org.firstinspires.ftc.teamcode.lib.util.Globals;
@@ -23,6 +21,11 @@ public class Tele extends CommandOpMode {
         super.run();
         snoopy.run();
         snoopy.intake.run(gamepad1.right_trigger - gamepad1.left_trigger);
+
+        if (gamepad1.crossWasPressed()) {
+            snoopy.shooter.stopper.toggle();
+        }
+
         snoopy.drivetrain.drive(gamepad1);
     }
 }

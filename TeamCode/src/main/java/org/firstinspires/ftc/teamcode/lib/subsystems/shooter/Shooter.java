@@ -13,7 +13,7 @@ public class Shooter extends SubsystemBase {
     public Stopper stopper;
 
     public static double[] distance = {50, 70, 100, 120, 140, 160};
-    public static double[] velocity = {1000, 1000, 1000, 1000, 1000, 1000};
+    public static double[] velocity = {1500, 1500, 1500, 1500, 1500, 1500};
     public static double[] percent = {0.5, 0.5, 0.5, 0.5, 0.5, 0.5};
     public static boolean tuning = false;
     public static double velocityTuning = 0;

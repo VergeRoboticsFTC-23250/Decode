@@ -23,4 +23,12 @@ public class Stopper extends SubsystemBase {
     public void open(){
         stopper.set(open);
     }
+
+    public void toggle() {
+        if (stopper.get() == open) {
+            close();
+        } else {
+            open();
+        }
+    }
 }
