@@ -32,9 +32,7 @@ public class Snoopy extends Robot {
         super.run();
         Vector dist = drivetrain.getDistanceFromGoal();
         shooter.update(dist.getMagnitude());
-        double angle = dist.getTheta();
-        g.telemetry.addData("error angle", Math.toDegrees(angle));
-        turret.setAngle(angle);
+        turret.setAngle(dist.getTheta() - drivetrain.follower.getHeading());
         g.telemetry.update();
     }
 }
