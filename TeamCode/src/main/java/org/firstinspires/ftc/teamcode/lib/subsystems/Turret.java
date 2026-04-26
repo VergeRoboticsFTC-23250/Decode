@@ -4,6 +4,7 @@ import com.seattlesolvers.solverslib.command.SubsystemBase;
 import com.seattlesolvers.solverslib.hardware.servos.ServoEx;
 
 import org.firstinspires.ftc.teamcode.lib.util.Globals;
+import org.firstinspires.ftc.teamcode.lib.util.Helpers;
 
 public class Turret extends SubsystemBase {
 
@@ -18,9 +19,10 @@ public class Turret extends SubsystemBase {
         turret3 = new ServoEx(g.hMap, "sh2", servoRange);
     }
 
-    public void setAngle(double angle) {
-        turret1.set(angle);
-        turret2.set(angle);
-        turret3.set(angle);
+    public void setAngle(double radians) {
+        double degrees = Math.toDegrees(Helpers.wrap(radians));
+        turret1.set(degrees);
+        turret2.set(degrees);
+        turret3.set(degrees);
     }
 }
