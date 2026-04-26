@@ -1,13 +1,14 @@
 package org.firstinspires.ftc.teamcode.lib.subsystems;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.seattlesolvers.solverslib.command.SubsystemBase;
 import com.seattlesolvers.solverslib.hardware.servos.ServoEx;
 
 import org.firstinspires.ftc.teamcode.lib.util.Globals;
 import org.firstinspires.ftc.teamcode.lib.util.Helpers;
 
+@Config
 public class Turret extends SubsystemBase {
-
     public ServoEx turret1;
     public ServoEx turret2;
     public ServoEx turret3;
