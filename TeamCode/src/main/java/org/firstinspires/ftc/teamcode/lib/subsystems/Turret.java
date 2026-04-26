@@ -12,6 +12,7 @@ public class Turret extends SubsystemBase {
     public ServoEx turret2;
     public ServoEx turret3;
     public static final double servoRange = 383.5184;
+    public static double offset = 0.0;
 
     public Turret(Globals g) {
         turret1 = new ServoEx(g.hMap, "sh0", servoRange);
@@ -20,7 +21,7 @@ public class Turret extends SubsystemBase {
     }
 
     public void setAngle(double radians) {
-        double degrees = Math.toDegrees(Helpers.wrap(radians));
+        double degrees = Math.toDegrees(Helpers.wrap(radians + Math.toRadians(offset)));
         turret1.set(degrees);
         turret2.set(degrees);
         turret3.set(degrees);
