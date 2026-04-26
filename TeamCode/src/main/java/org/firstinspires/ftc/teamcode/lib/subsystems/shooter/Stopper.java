@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.lib.subsystems.shooter;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.seattlesolvers.solverslib.command.InstantCommand;
+import com.seattlesolvers.solverslib.command.RunCommand;
 import com.seattlesolvers.solverslib.command.SubsystemBase;
 import com.seattlesolvers.solverslib.hardware.servos.ServoEx;
 
@@ -15,7 +16,7 @@ public class Stopper extends SubsystemBase {
     public Stopper(Globals g){
         stopper = new ServoEx(g.hMap, "ehs0");
         close();
-        setDefaultCommand(new InstantCommand(this::close));
+        setDefaultCommand(new RunCommand(this::close, this));
     }
 
     public void close(){

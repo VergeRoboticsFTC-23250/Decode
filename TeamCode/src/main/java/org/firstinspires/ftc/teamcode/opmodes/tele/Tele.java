@@ -36,7 +36,7 @@ public class Tele extends CommandOpMode {
     public void run() {
         super.run();
         snoopy.run();
-        snoopy.intake.setDefaultCommand(new InstantCommand(() -> snoopy.intake.run(gamepad1.right_trigger - gamepad1.left_trigger)));
+        snoopy.intake.setDefaultCommand(new RunCommand(() -> snoopy.intake.run(gamepad1.right_trigger - gamepad1.left_trigger), snoopy.intake));
 
         snoopy.drivetrain.drive(gamepad1);
     }
