@@ -19,7 +19,8 @@ public class Constants {
             .mass(12.5)
             .headingPIDFCoefficients(new PIDFCoefficients(2, 0, 0.1, 0.01))
             .predictiveBrakingCoefficients(new PredictiveBrakingCoefficients(0.1, 0.06707059, 0.00204113))
-            .centripetalScaling(0);
+            .centripetalScaling(0)
+            .automaticHoldEnd(true);
 
     public static MecanumConstants mecanumConstants = new MecanumConstants()
             .maxPower(1)

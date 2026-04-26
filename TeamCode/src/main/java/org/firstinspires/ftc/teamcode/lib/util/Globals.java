@@ -3,14 +3,13 @@ package org.firstinspires.ftc.teamcode.lib.util;
 import android.graphics.Point;
 
 import com.pedropathing.geometry.Pose;
-import com.pedropathing.math.Vector;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class Globals {
     private static Globals instance;
     private static final Point GOAL_POINT_RED = new Point(144,144);
     private static final Point GOAL_POINT_BLUE = new Point(0,144);
-    private static final Pose START_POSE_RED = new Pose(0,0,0);
+    private static final Pose START_POSE_RED = new Pose(117,127,0);
     private static final Pose START_POSE_BLUE = START_POSE_RED.mirror();
     public enum Alliance{ RED, BLUE }
     public enum MatchState{ AUTO, TELE }

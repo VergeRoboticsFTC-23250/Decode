@@ -21,6 +21,8 @@ public class Tele extends CommandOpMode {
         super.run();
         snoopy.intake.run(gamepad1.right_trigger - gamepad1.left_trigger);
 
+        snoopy.drivetrain.drive(gamepad1);
+
         telemetry.update();
     }
 }
