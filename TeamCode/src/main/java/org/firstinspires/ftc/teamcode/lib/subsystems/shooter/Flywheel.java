@@ -4,7 +4,6 @@ import com.acmerobotics.dashboard.config.Config;
 import com.seattlesolvers.solverslib.command.SubsystemBase;
 import com.seattlesolvers.solverslib.controller.PIDFController;
 import com.seattlesolvers.solverslib.hardware.motors.MotorEx;
-import com.seattlesolvers.solverslib.hardware.motors.MotorGroup;
 
 import org.firstinspires.ftc.teamcode.lib.util.Globals;
 
@@ -13,7 +12,7 @@ public class Flywheel extends SubsystemBase {
     Globals g;
     private final MotorEx motor1, motor2;
     public static double p = 0.0036, f = 0.00029;
-    private PIDFController controller;
+    public PIDFController controller;
     private double velocity = 0;
     public Flywheel(Globals g){
         this.g = g;
@@ -23,6 +22,7 @@ public class Flywheel extends SubsystemBase {
 
         controller = new PIDFController(p, 0, 0, f);
         controller.setSetPoint(velocity);
+        controller.setTolerance(150);
     }
 
     @Override

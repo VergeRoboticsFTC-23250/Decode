@@ -35,11 +35,9 @@ public class RedClose extends CommandOpMode {
                new InstantCommand(() -> snoop.intake.run(1, true)),
                shootFor(1000),
 
-
                new InstantCommand(() -> snoop.intake.run(1, true)),
                pathTo(snoop.drivetrain.intakeFirst, 0.6),
                new WaitCommand(1000),
-//               new InstantCommand(() -> snoop.intake.run(0, true)),
 
                pathTo(snoop.drivetrain.shootFirst),
                shootFor(1000),
@@ -47,9 +45,18 @@ public class RedClose extends CommandOpMode {
                new InstantCommand(() -> snoop.intake.run(1, true)),
                pathTo(snoop.drivetrain.intakeSecond1, 0.6),
                new WaitCommand(1000),
-//               new InstantCommand(() -> snoop.intake.run(0, true)),
                pathTo(snoop.drivetrain.shootSecond),
+               shootFor(1000),
+
+               new InstantCommand(() -> snoop.intake.run(0.5, true)),
+               pathTo(snoop.drivetrain.intakeThird1, 0.8),
+               new WaitCommand(300),
+               pathTo(snoop.drivetrain.intakeThird2),
+               pathTo(snoop.drivetrain.intakeThird3),
+               new WaitCommand(1000),
+               pathTo(snoop.drivetrain.shootThird),
                shootFor(1000)
+
        ));
     }
 

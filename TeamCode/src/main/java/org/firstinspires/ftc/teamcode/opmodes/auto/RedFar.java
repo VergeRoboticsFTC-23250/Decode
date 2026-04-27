@@ -6,15 +6,15 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.seattlesolvers.solverslib.command.Command;
 import com.seattlesolvers.solverslib.command.CommandOpMode;
 import com.seattlesolvers.solverslib.command.InstantCommand;
-import com.seattlesolvers.solverslib.command.ParallelDeadlineGroup;
 import com.seattlesolvers.solverslib.command.SequentialCommandGroup;
 import com.seattlesolvers.solverslib.command.WaitCommand;
+import com.seattlesolvers.solverslib.command.WaitUntilCommand;
 import com.seattlesolvers.solverslib.pedroCommand.FollowPathCommand;
 
 import org.firstinspires.ftc.teamcode.lib.Snoopy;
 import org.firstinspires.ftc.teamcode.lib.util.Globals;
 
-@Autonomous(name = "RedAuto")
+@Autonomous(name = "RedFar")
 public class RedFar extends CommandOpMode {
 
     /**
@@ -31,20 +31,30 @@ public class RedFar extends CommandOpMode {
         g = new Globals(this, Globals.Alliance.RED);
         g.startPose = new Pose(89,7, Math.toRadians(0));
         snoop = new Snoopy(g);
+        snoop.drivetrain.buildPathsFarRed();
         schedule( new SequentialCommandGroup(
-                pathTo(snoop.drivetrain.preload),
+
+//                pathTo(snoop.drivetrain.preload),
+//                new InstantCommand(() -> snoop.intake.run(1, true)),
+                new WaitUntilCommand(() -> snoop.shooter.flywheel.controller.atSetPoint()),
+                new WaitCommand(700),
                 shootFor(1000),
 
+
                 new InstantCommand(() -> snoop.intake.run(1, true)),
-                pathTo(snoop.drivetrain.intakeFirst),
-                new InstantCommand(() -> snoop.intake.run(0, true)),
+                pathTo(snoop.drivetrain.intakeFirst, 0.8),
+                new WaitCommand(1000),
+//               new InstantCommand(() -> snoop.intake.run(0, true)),
 
                 pathTo(snoop.drivetrain.shootFirst),
                 shootFor(1000),
 
                 new InstantCommand(() -> snoop.intake.run(1, true)),
-                pathTo(snoop.drivetrain.intakeSecond1),
-                new InstantCommand(() -> snoop.intake.run(1, true)),
+                pathTo(snoop.drivetrain.intakeSecond1, 0.6),
+                new WaitCommand(200),
+                pathTo(snoop.drivetrain.intakeSecond2, 0.8),
+                pathTo(snoop.drivetrain.intakeSecond3, 0.6),
+//               new InstantCommand(() -> snoop.intake.run(0, true)),
                 pathTo(snoop.drivetrain.shootSecond),
                 shootFor(1000)
         ));
@@ -70,10 +80,22 @@ public class RedFar extends CommandOpMode {
         );
     }
 
+    public FollowPathCommand pathTo(PathChain path, double maxPow) {
+        return new FollowPathCommand(
+                snoop.drivetrain.follower,
+                path,
+                true,
+                maxPow
+        );
+    }
+
     public Command shootFor(long ms) {
-        return new ParallelDeadlineGroup(
-                new WaitCommand(ms),
-                snoop.shoot()
+        Command shoot = snoop.shoot();
+        return new SequentialCommandGroup(
+                shoot.withTimeout(ms),
+                new InstantCommand(shoot::cancel),
+                new InstantCommand(() -> snoop.intake.run(0)),
+                new InstantCommand(() -> snoop.shooter.stopper.close())
         );
     }
 }

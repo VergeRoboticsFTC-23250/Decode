@@ -23,7 +23,7 @@ public class Drivetrain extends SubsystemBase {
     public Follower follower;
     public static boolean reverse = true;
 
-    public PathChain preload, intakeFirst, shootFirst, intakeSecond1, intakeSecond2, intakeSecond3, shootSecond;
+    public PathChain preload, intakeFirst, shootFirst, intakeSecond1, intakeSecond2, intakeSecond3, shootSecond, intakeThird1, intakeThird2, intakeThird3, shootThird;
     Globals g;
 
     public Drivetrain(Globals g){
@@ -74,7 +74,7 @@ public class Drivetrain extends SubsystemBase {
                         new BezierCurve(
                                 new Pose(90.000, 96.000),
                                 new Pose(95.727, 81.375),
-                                new Pose(128.000, 84.000)
+                                new Pose(126.000, 84.000)
                         )
                 )
                 .setTangentHeadingInterpolation()
@@ -83,7 +83,7 @@ public class Drivetrain extends SubsystemBase {
         shootFirst = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
-                                new Pose(128.000, 84.000),
+                                new Pose(126.000, 84.000),
                                 new Pose(83.000, 86.000)
                         )
                 )
@@ -106,12 +106,54 @@ public class Drivetrain extends SubsystemBase {
                 .addPath(
                         new BezierLine(
                                 new Pose(136.000, 60.000),
-                                new Pose(78.341, 77.907)
+                                new Pose(84, 76)
                         )
                 )
                 .setTangentHeadingInterpolation()
                 .setReversed()
                 .build();
+        intakeThird1 = follower.pathBuilder()
+                .addPath(
+                        new BezierCurve(
+                                new Pose(84.000, 76.000),
+                                new Pose(102.503, 62.376),
+                                new Pose(132.000, 63.000)
+                        )
+                )
+                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(30))
+                .build();
+
+        intakeThird2 = follower.pathBuilder()
+                .addPath(
+                        new BezierLine(
+                                new Pose(132.000, 63.000),
+                                new Pose(134.000, 52.000)
+                        )
+                )
+                .setLinearHeadingInterpolation(Math.toRadians(30), Math.toRadians(60))
+                .build();
+
+        intakeThird3 = follower.pathBuilder()
+                .addPath(
+                        new BezierLine(
+                                new Pose(134.000, 52.000),
+                                new Pose(136.000, 58.000)
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(60))
+                .build();
+
+        shootThird = follower.pathBuilder()
+                .addPath(
+                        new BezierLine(
+                                new Pose(136.000, 58.000),
+                                new Pose(84.000, 76.000)
+                        )
+                )
+                .setTangentHeadingInterpolation()
+                .setReversed()
+                .build();
+
     }
 
     public void buildPathsFarRed() {
@@ -160,7 +202,7 @@ public class Drivetrain extends SubsystemBase {
                 .addPath(
                         new BezierLine(
                                 new Pose(128.000, 7.000),
-                                new Pose(135.000, 7.000)
+                                new Pose(133.000, 7.000)
                         )
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(0))
@@ -169,7 +211,7 @@ public class Drivetrain extends SubsystemBase {
         shootSecond = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
-                                new Pose(135.000, 7.000),
+                                new Pose(133.000, 7.000),
                                 new Pose(98.000, 7.000)
                         )
                 )
