@@ -12,10 +12,11 @@ import com.seattlesolvers.solverslib.command.WaitUntilCommand;
 import com.seattlesolvers.solverslib.pedroCommand.FollowPathCommand;
 
 import org.firstinspires.ftc.teamcode.lib.Snoopy;
+import org.firstinspires.ftc.teamcode.lib.subsystems.Turret;
 import org.firstinspires.ftc.teamcode.lib.util.Globals;
 
-@Autonomous(name = "RedFar")
-public class RedFar extends CommandOpMode {
+@Autonomous(name = "BlueClose")
+public class BlueClose extends CommandOpMode {
 
     /**
      * User-defined init method
@@ -28,37 +29,44 @@ public class RedFar extends CommandOpMode {
 
     @Override
     public void initialize() {
-        g = new Globals(this, Globals.Alliance.RED);
-        //g.startPose = new Pose(89,7, Math.toRadians(0));
+        g = new Globals(this, Globals.Alliance.BLUE);
         snoop = new Snoopy(g);
-        snoop.drivetrain.buildPathsFarRed();
-        schedule( new SequentialCommandGroup(
-
-//                pathTo(snoop.drivetrain.preload),
-//                new InstantCommand(() -> snoop.intake.run(1, true)),
-                new WaitUntilCommand(() -> snoop.shooter.flywheel.controller.atSetPoint()),
-                new WaitCommand(700),
+        snoop.drivetrain.buildPathsCloseBlue();
+        schedule(new SequentialCommandGroup(
+                new InstantCommand(() -> Turret.offset = -2),
+                pathTo(snoop.drivetrain.preload),
+                new InstantCommand(() -> snoop.intake.run(1)),
                 shootFor(1000),
 
+                new InstantCommand(() -> Turret.offset = -2),
+                new InstantCommand(() -> snoop.intake.run(1)),
+                pathTo(snoop.drivetrain.intakeFirst, 0.5),
+                new WaitUntilCommand(() -> snoop.intake.isFull()).withTimeout(1000),
 
-                new InstantCommand(() -> snoop.intake.run(1, true)),
-                pathTo(snoop.drivetrain.intakeFirst, 0.8),
-                new WaitCommand(1000),
-//               new InstantCommand(() -> snoop.intake.run(0, true)),
 
                 pathTo(snoop.drivetrain.shootFirst),
+                new WaitCommand(750),
                 shootFor(1000),
 
-                new InstantCommand(() -> snoop.intake.run(1, true)),
-                pathTo(snoop.drivetrain.intakeSecond1, 0.6),
-                new WaitCommand(200),
-                pathTo(snoop.drivetrain.intakeSecond2, 0.8),
-                pathTo(snoop.drivetrain.intakeSecond3, 0.6),
-//               new InstantCommand(() -> snoop.intake.run(0, true)),
+                new InstantCommand(() -> snoop.intake.run(1)),
+                pathTo(snoop.drivetrain.intakeSecond1),
+                pathTo(snoop.drivetrain.intakeSecond2, 0.5),
+                new WaitUntilCommand(() -> snoop.intake.isFull()).withTimeout(1000),
                 pathTo(snoop.drivetrain.shootSecond),
+                new WaitCommand(750),
+                shootFor(1000),
+
+                new InstantCommand(() -> snoop.intake.run(1)),
+                pathTo(snoop.drivetrain.intakeThird1),
+                pathTo(snoop.drivetrain.intakeThird2, 0.5),
+                new WaitUntilCommand(() -> snoop.intake.isFull()).withTimeout(1000),
+                pathTo(snoop.drivetrain.shootThird),
+                new WaitCommand(750),
                 shootFor(1000)
+
         ));
     }
+
 
     /**
      * User-defined loop method
@@ -70,6 +78,10 @@ public class RedFar extends CommandOpMode {
     public void run() {
         super.run();
         snoop.run();
+        Pose pose = snoop.drivetrain.follower.getPose();
+        if(pose.getX() != 0 || pose.getY() != 0 || pose.getHeading() != 0){
+            Globals.pose = pose;
+        }
     }
 
     public FollowPathCommand pathTo(PathChain path) {

@@ -38,7 +38,7 @@ public class Flywheel extends SubsystemBase {
             motor2.set(pow);
         }
 
-        g.telemetry.addData("velocity", velocity);
+        // g.telemetry.addData("velocity", velocity);
 
 //        controller.setP(p);
 //        controller.setF(f);

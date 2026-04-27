@@ -77,6 +77,7 @@ public class RedClose extends CommandOpMode {
     public void run() {
         super.run();
         snoop.run();
+        Globals.pose = snoop.drivetrain.follower.getPose();
     }
 
     public FollowPathCommand pathTo(PathChain path) {

@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.lib.subsystems;
 
+import static org.firstinspires.ftc.teamcode.lib.util.Globals.MatchState.AUTO;
 import static org.firstinspires.ftc.teamcode.lib.util.Globals.MatchState.TELE;
 
 import com.acmerobotics.dashboard.config.Config;
@@ -30,7 +31,11 @@ public class Drivetrain extends SubsystemBase {
         this.g = g;
         pto = new ServoEx(g.hMap, "sh5");
         follower = Constants.createFollower(g.hMap);
-        follower.setStartingPose(Globals.getInstance().startPose);
+        if(g.matchState == AUTO){
+            follower.setStartingPose(g.startPose);
+        }else {
+            follower.setStartingPose(Globals.pose);
+        }
         follower.update();
 
         if(g.matchState == TELE){
@@ -59,7 +64,13 @@ public class Drivetrain extends SubsystemBase {
         g.telemetry.addData("x", pose.getX());
         g.telemetry.addData("y", pose.getY());
         g.telemetry.addData("h", Math.toDegrees(pose.getHeading()));
-        return new Vector(g.goalPose.minus(pose));
+
+        Pose pose2 = g.GOAL_POSE;
+        g.telemetry.addData("x_g", pose2.getX());
+        g.telemetry.addData("y_g", pose2.getY());
+        g.telemetry.addData("h_g", Math.toDegrees(pose2.getHeading()));
+
+        return new Vector(g.GOAL_POSE.minus(pose));
     }
 
     public void buildPathsCloseRed() {
@@ -155,25 +166,25 @@ public class Drivetrain extends SubsystemBase {
                 .setReversed()
                 .build();
 
-        intakeGate1 = follower.pathBuilder()
-                .addPath(
-                        new BezierLine(
-                                new Pose(84.000, 76.000),
-                                new Pose(132.000, 62.000)
-                        )
-                )
-                .setConstantHeadingInterpolation(Math.toRadians(30))
-                .build();
-
-        intakeGate2 = follower.pathBuilder()
-                .addPath(
-                        new BezierLine(
-                                new Pose(132.000, 62.000),
-                                new Pose(133.000, 52.000)
-                        )
-                )
-                .setLinearHeadingInterpolation(Math.toRadians(30), Math.toRadians(70))
-                .build();
+//        intakeGate1 = follower.pathBuilder()
+//                .addPath(
+//                        new BezierLine(
+//                                new Pose(84.000, 76.000),
+//                                new Pose(132.000, 62.000)
+//                        )
+//                )
+//                .setConstantHeadingInterpolation(Math.toRadians(30))
+//                .build();
+//
+//        intakeGate2 = follower.pathBuilder()
+//                .addPath(
+//                        new BezierLine(
+//                                new Pose(132.000, 62.000),
+//                                new Pose(133.000, 52.000)
+//                        )
+//                )
+//                .setLinearHeadingInterpolation(Math.toRadians(30), Math.toRadians(70))
+//                .build();
     }
 
     public void buildPathsFarRed() {

@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.lib;
 
+import android.provider.Settings;
+
 import com.pedropathing.math.Vector;
 import com.seattlesolvers.solverslib.command.Command;
 import com.seattlesolvers.solverslib.command.CommandOpMode;
@@ -38,6 +40,7 @@ public class Snoopy extends Robot {
         double mag = dist.getMagnitude();
         shooter.update(mag);
         turret.setAngle(dist.getTheta() - drivetrain.follower.getHeading() + (mag > 120 ? Math.toRadians(g.turretOffsetFar) : 0));
+        g.telemetry.addData("alliance", Globals.ALLIANCE == Globals.Alliance.RED ? "RED" : "BLUE");
         g.telemetry.update();
     }
 
