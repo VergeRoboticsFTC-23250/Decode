@@ -5,11 +5,14 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.seattlesolvers.solverslib.command.Command;
 import com.seattlesolvers.solverslib.command.CommandOpMode;
 import com.seattlesolvers.solverslib.command.InstantCommand;
+import com.seattlesolvers.solverslib.command.ParallelRaceGroup;
 import com.seattlesolvers.solverslib.command.SequentialCommandGroup;
 import com.seattlesolvers.solverslib.command.WaitCommand;
+import com.seattlesolvers.solverslib.command.WaitUntilCommand;
 import com.seattlesolvers.solverslib.pedroCommand.FollowPathCommand;
 
 import org.firstinspires.ftc.teamcode.lib.Snoopy;
+import org.firstinspires.ftc.teamcode.lib.subsystems.Turret;
 import org.firstinspires.ftc.teamcode.lib.util.Globals;
 
 @Autonomous(name = "RedClose")
@@ -30,34 +33,39 @@ public class RedClose extends CommandOpMode {
         snoop = new Snoopy(g);
         //Command shoot = snoop.shoot();
         snoop.drivetrain.buildPathsCloseRed();
-       schedule( new SequentialCommandGroup(
-               pathTo(snoop.drivetrain.preload),
-               new InstantCommand(() -> snoop.intake.run(1, true)),
-               shootFor(1000),
+        schedule( new SequentialCommandGroup(
+                new InstantCommand(() -> Turret.offset = 0),
+                pathTo(snoop.drivetrain.preload),
+                new InstantCommand(() -> snoop.intake.run(1)),
+                shootFor(1000),
 
-               new InstantCommand(() -> snoop.intake.run(1, true)),
-               pathTo(snoop.drivetrain.intakeFirst, 0.6),
-               new WaitCommand(1000),
+                new InstantCommand(() -> Turret.offset = -4),
+                new InstantCommand(() -> snoop.intake.run(1)),
+                pathTo(snoop.drivetrain.intakeFirst, 0.5),
+                new WaitUntilCommand(() -> snoop.intake.isFull()).withTimeout(1000),
 
-               pathTo(snoop.drivetrain.shootFirst),
-               shootFor(1000),
 
-               new InstantCommand(() -> snoop.intake.run(1, true)),
-               pathTo(snoop.drivetrain.intakeSecond1, 0.6),
-               new WaitCommand(1000),
-               pathTo(snoop.drivetrain.shootSecond),
-               shootFor(1000),
+                pathTo(snoop.drivetrain.shootFirst),
+                new WaitCommand(750),
+                shootFor(1000),
 
-               new InstantCommand(() -> snoop.intake.run(0.5, true)),
-               pathTo(snoop.drivetrain.intakeThird1, 0.8),
-               new WaitCommand(300),
-               pathTo(snoop.drivetrain.intakeThird2),
-               pathTo(snoop.drivetrain.intakeThird3),
-               new WaitCommand(1000),
-               pathTo(snoop.drivetrain.shootThird),
-               shootFor(1000)
+                new InstantCommand(() -> snoop.intake.run(1)),
+                pathTo(snoop.drivetrain.intakeSecond1),
+                pathTo(snoop.drivetrain.intakeSecond2, 0.5),
+                new WaitUntilCommand(() -> snoop.intake.isFull()).withTimeout(1000),
+                pathTo(snoop.drivetrain.shootSecond),
+                new WaitCommand(750),
+                shootFor(1000),
 
-       ));
+                new InstantCommand(() -> snoop.intake.run(1)),
+                pathTo(snoop.drivetrain.intakeThird1),
+                pathTo(snoop.drivetrain.intakeThird2, 0.5),
+                new WaitUntilCommand(() -> snoop.intake.isFull()).withTimeout(1000),
+                pathTo(snoop.drivetrain.shootThird),
+                new WaitCommand(750),
+                shootFor(1000)
+
+        ));
     }
 
     /**

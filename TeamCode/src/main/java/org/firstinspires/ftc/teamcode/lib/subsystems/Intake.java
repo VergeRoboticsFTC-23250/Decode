@@ -18,6 +18,7 @@ public class Intake extends SubsystemBase {
     public static double red = .28, orange = 0.33, yellow = 0.388, green = 0.5;
     private double pow;
     private boolean force;
+    private boolean full = false;
 
     public Intake(Globals g) {
         intake = new MotorEx(g.hMap, "ehm3");
@@ -39,6 +40,10 @@ public class Intake extends SubsystemBase {
     public void run(double pow, boolean force) {
         this.pow = pow;
         this.force = force;
+    }
+
+    public boolean isFull(){
+        return full;
     }
 
     @Override
@@ -64,7 +69,13 @@ public class Intake extends SubsystemBase {
             }
         }
 
-        if(front.isBlocked() && middle.isBlocked() && front.isBlocked()) rgb.set(green);
-        else rgb.set(red);
+        if(front.isBlocked() && middle.isBlocked() && front.isBlocked()){
+            rgb.set(green);
+            full = true;
+        }
+        else {
+            rgb.set(red);
+            full = false;
+        }
     }
 }

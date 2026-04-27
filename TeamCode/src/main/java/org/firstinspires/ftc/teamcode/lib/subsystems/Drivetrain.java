@@ -23,14 +23,14 @@ public class Drivetrain extends SubsystemBase {
     public Follower follower;
     public static boolean reverse = true;
 
-    public PathChain preload, intakeFirst, shootFirst, intakeSecond1, intakeSecond2, intakeSecond3, shootSecond, intakeThird1, intakeThird2, intakeThird3, shootThird;
+    public PathChain preload, intakeFirst, shootFirst, intakeSecond1, intakeSecond2, intakeSecond3, shootSecond, intakeThird1, intakeThird2, shootThird, intakeGate1, intakeGate2, intakeGate3, shootGate;
     Globals g;
 
     public Drivetrain(Globals g){
         this.g = g;
         pto = new ServoEx(g.hMap, "sh5");
         follower = Constants.createFollower(g.hMap);
-        follower.setStartingPose(g.startPose);
+//        follower.setStartingPose(Globals.START_POSE);
         follower.update();
 
         if(g.matchState == TELE){
@@ -43,7 +43,7 @@ public class Drivetrain extends SubsystemBase {
         if(reverse){
             follower.setTeleOpDrive(-gamepad.right_stick_y, -gamepad.right_stick_x, -gamepad.left_stick_x, true);
         }else{
-            follower.setTeleOpDrive(gamepad.left_stick_y, gamepad.left_stick_x, gamepad.right_stick_x, true);
+            follower.setTeleOpDrive(-gamepad.left_stick_y, -gamepad.left_stick_x, -gamepad.right_stick_x, true);
         }
     }
 
@@ -63,28 +63,27 @@ public class Drivetrain extends SubsystemBase {
                 .addPath(
                         new BezierLine(
                                 new Pose(117.000, 127.000),
-                                new Pose(90.000, 96.000)
+                                new Pose(94.000, 84.000)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(315))
+                .setConstantHeadingInterpolation(Math.toRadians(0))
                 .build();
 
         intakeFirst = follower.pathBuilder()
                 .addPath(
-                        new BezierCurve(
-                                new Pose(90.000, 96.000),
-                                new Pose(95.727, 81.375),
+                        new BezierLine(
+                                new Pose(94.000, 84.000),
                                 new Pose(126.000, 84.000)
                         )
                 )
-                .setTangentHeadingInterpolation()
+                .setConstantHeadingInterpolation(Math.toRadians(0))
                 .build();
 
         shootFirst = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
                                 new Pose(126.000, 84.000),
-                                new Pose(83.000, 86.000)
+                                new Pose(84.000, 76.000)
                         )
                 )
                 .setTangentHeadingInterpolation()
@@ -93,20 +92,29 @@ public class Drivetrain extends SubsystemBase {
 
         intakeSecond1 = follower.pathBuilder()
                 .addPath(
-                        new BezierCurve(
-                                new Pose(83.000, 86.000),
-                                new Pose(82.571, 56.845),
+                        new BezierLine(
+                                new Pose(84.000, 76.000),
+                                new Pose(96.000, 60.000)
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(0))
+                .build();
+
+        intakeSecond2 = follower.pathBuilder()
+                .addPath(
+                        new BezierLine(
+                                new Pose(96.000, 60.000),
                                 new Pose(136.000, 60.000)
                         )
                 )
-                .setTangentHeadingInterpolation()
+                .setConstantHeadingInterpolation(Math.toRadians(0))
                 .build();
 
         shootSecond = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
                                 new Pose(136.000, 60.000),
-                                new Pose(84, 76)
+                                new Pose(84.000, 76.000)
                         )
                 )
                 .setTangentHeadingInterpolation()
@@ -114,39 +122,28 @@ public class Drivetrain extends SubsystemBase {
                 .build();
         intakeThird1 = follower.pathBuilder()
                 .addPath(
-                        new BezierCurve(
+                        new BezierLine(
                                 new Pose(84.000, 76.000),
-                                new Pose(102.503, 62.376),
-                                new Pose(132.000, 63.000)
+                                new Pose(96.000, 36.000)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(30))
+                .setConstantHeadingInterpolation(Math.toRadians(0))
                 .build();
 
         intakeThird2 = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
-                                new Pose(132.000, 63.000),
-                                new Pose(134.000, 52.000)
+                                new Pose(96.000, 36.000),
+                                new Pose(136.000, 36.000)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(30), Math.toRadians(60))
-                .build();
-
-        intakeThird3 = follower.pathBuilder()
-                .addPath(
-                        new BezierLine(
-                                new Pose(134.000, 52.000),
-                                new Pose(136.000, 58.000)
-                        )
-                )
-                .setConstantHeadingInterpolation(Math.toRadians(60))
+                .setConstantHeadingInterpolation(Math.toRadians(0))
                 .build();
 
         shootThird = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
-                                new Pose(136.000, 58.000),
+                                new Pose(136.000, 36.000),
                                 new Pose(84.000, 76.000)
                         )
                 )
@@ -154,6 +151,25 @@ public class Drivetrain extends SubsystemBase {
                 .setReversed()
                 .build();
 
+        intakeGate1 = follower.pathBuilder()
+                .addPath(
+                        new BezierLine(
+                                new Pose(84.000, 76.000),
+                                new Pose(132.000, 62.000)
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(30))
+                .build();
+
+        intakeGate2 = follower.pathBuilder()
+                .addPath(
+                        new BezierLine(
+                                new Pose(132.000, 62.000),
+                                new Pose(133.000, 52.000)
+                        )
+                )
+                .setLinearHeadingInterpolation(Math.toRadians(30), Math.toRadians(70))
+                .build();
     }
 
     public void buildPathsFarRed() {
@@ -217,11 +233,121 @@ public class Drivetrain extends SubsystemBase {
                 )
                 .setConstantHeadingInterpolation(Math.toRadians(0))
                 .build();
+
+
     }
 
-//    public void buildPathsCloseBlue() {
-//        buildPathsCloseRed();
+    public void buildPathsCloseBlue() {
+        preload = follower.pathBuilder()
+                .addPath(
+                        new BezierLine(
+                                new Pose(117.000, 127.000).mirror(),
+                                new Pose(94.000, 84.000).mirror()
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(180))
+                .build();
+
+        intakeFirst = follower.pathBuilder()
+                .addPath(
+                        new BezierLine(
+                                new Pose(94.000, 84.000).mirror(),
+                                new Pose(126.000, 84.000).mirror()
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(180))
+                .build();
+
+        shootFirst = follower.pathBuilder()
+                .addPath(
+                        new BezierLine(
+                                new Pose(126.000, 84.000).mirror(),
+                                new Pose(84.000, 76.000).mirror()
+                        )
+                )
+                .setTangentHeadingInterpolation()
+                .setReversed()
+                .build();
+
+        intakeSecond1 = follower.pathBuilder()
+                .addPath(
+                        new BezierLine(
+                                new Pose(84.000, 76.000).mirror(),
+                                new Pose(96.000, 60.000).mirror()
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(180))
+                .build();
+
+        intakeSecond2 = follower.pathBuilder()
+                .addPath(
+                        new BezierLine(
+                                new Pose(96.000, 60.000).mirror(),
+                                new Pose(136.000, 60.000).mirror()
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(180))
+                .build();
+
+        shootSecond = follower.pathBuilder()
+                .addPath(
+                        new BezierLine(
+                                new Pose(136.000, 60.000).mirror(),
+                                new Pose(84.000, 76.000).mirror()
+                        )
+                )
+                .setTangentHeadingInterpolation()
+                .setReversed()
+                .build();
+        intakeThird1 = follower.pathBuilder()
+                .addPath(
+                        new BezierLine(
+                                new Pose(84.000, 76.000).mirror(),
+                                new Pose(96.000, 36.000).mirror()
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(180))
+                .build();
+
+        intakeThird2 = follower.pathBuilder()
+                .addPath(
+                        new BezierLine(
+                                new Pose(96.000, 36.000).mirror(),
+                                new Pose(136.000, 36.000).mirror()
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(180))
+                .build();
+
+        shootThird = follower.pathBuilder()
+                .addPath(
+                        new BezierLine(
+                                new Pose(136.000, 36.000).mirror(),
+                                new Pose(84.000, 76.000).mirror()
+                        )
+                )
+                .setTangentHeadingInterpolation()
+                .setReversed()
+                .build();
+
+//        intakeGate1 = follower.pathBuilder()
+//                .addPath(
+//                        new BezierLine(
+//                                new Pose(84.000, 76.000).mirror(),
+//                                new Pose(132.000, 62.000).mirror()
+//                        )
+//                )
+//                .setConstantHeadingInterpolation(Math.toRadians(30))
+//                .build();
 //
-//         mirror all of them
-//    }
+//        intakeGate2 = follower.pathBuilder()
+//                .addPath(
+//                        new BezierLine(
+//                                new Pose(132.000, 62.000).mirror(),
+//                                new Pose(133.000, 52.000).mirror()
+//                        )
+//                )
+//                .setLinearHeadingInterpolation(Math.toRadians(30), Math.toRadians(70))
+//                .build();
+    }
 }
