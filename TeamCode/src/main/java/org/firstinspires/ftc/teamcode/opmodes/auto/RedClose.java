@@ -31,9 +31,8 @@ public class RedClose extends CommandOpMode {
     public void initialize() {
         g = new Globals(this, Globals.Alliance.RED);
         snoop = new Snoopy(g);
-        //Command shoot = snoop.shoot();
         snoop.drivetrain.buildPathsCloseRed();
-        schedule( new SequentialCommandGroup(
+        schedule(new SequentialCommandGroup(
                 new InstantCommand(() -> Turret.offset = 0),
                 pathTo(snoop.drivetrain.preload),
                 new InstantCommand(() -> snoop.intake.run(1)),

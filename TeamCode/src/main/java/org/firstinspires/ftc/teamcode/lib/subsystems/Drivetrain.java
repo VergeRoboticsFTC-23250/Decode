@@ -30,7 +30,7 @@ public class Drivetrain extends SubsystemBase {
         this.g = g;
         pto = new ServoEx(g.hMap, "sh5");
         follower = Constants.createFollower(g.hMap);
-//        follower.setStartingPose(Globals.START_POSE);
+        follower.setStartingPose(Globals.getInstance().startPose);
         follower.update();
 
         if(g.matchState == TELE){
@@ -55,7 +55,11 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public Vector getDistanceFromGoal(){
-        return new Vector(g.goalPose.minus(follower.getPose()));
+        Pose pose = follower.getPose();
+        g.telemetry.addData("x", pose.getX());
+        g.telemetry.addData("y", pose.getY());
+        g.telemetry.addData("h", Math.toDegrees(pose.getHeading()));
+        return new Vector(g.goalPose.minus(pose));
     }
 
     public void buildPathsCloseRed() {

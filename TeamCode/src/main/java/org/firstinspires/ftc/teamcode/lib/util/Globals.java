@@ -11,8 +11,8 @@ public class Globals {
     private static Globals instance;
     private static final Pose GOAL_POSE_RED = new Pose(144,144);
     private static final Pose GOAL_POSE_BLUE = new Pose(0,144);
-    private static Pose START_POSE_RED = new Pose(117,127,0);
-    private static Pose START_POSE_BLUE = START_POSE_RED.mirror();
+    private static final Pose START_POSE_RED = new Pose(117,127,0);
+    private static final Pose START_POSE_BLUE = START_POSE_RED.mirror();
     private static final double TURRET_OFFSET_FAR_RED = 3;
     private static final double TURRET_OFFSET_FAR_BLUE = -TURRET_OFFSET_FAR_RED;
     public enum Alliance{ RED, BLUE }
